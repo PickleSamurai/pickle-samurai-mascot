@@ -213,7 +213,7 @@ html,body{overflow-x:clip}
     <g class="steam"><circle cx="229" cy="22" r="9" fill="#FFF4E3" opacity=".7"/></g>
     <g class="steam s2"><circle cx="232" cy="22" r="7" fill="#FFF4E3" opacity=".7"/></g>
     <g class="steam s3"><circle cx="226" cy="22" r="8" fill="#FFF4E3" opacity=".7"/></g>
-    <g transform="translate(0,20)"><use href="#truck"/><g><use href="#wheel" x="98" y="158" class="hw"/><use href="#wheel" x="286" y="158" class="hw"/></g></g>
+    <g transform="translate(0,20)"><use href="#truck"/><g transform="translate(98 158)"><use href="#wheel" class="hw"/></g><g transform="translate(286 158)"><use href="#wheel" class="hw"/></g></g>
   </svg>
 </section>
 
@@ -269,7 +269,7 @@ html,body{overflow-x:clip}
 
 <!-- driving road -->
 <div class="road" aria-hidden="true">
-  <svg class="truck" id="roadTruck" viewBox="0 0 360 200"><use href="#truck"/><use href="#wheel" x="98" y="158" class="rw"/><use href="#wheel" x="286" y="158" class="rw"/></svg>
+  <svg class="truck" id="roadTruck" viewBox="0 0 360 200"><use href="#truck"/><g transform="translate(98 158)"><use href="#wheel" class="rw"/></g><g transform="translate(286 158)"><use href="#wheel" class="rw"/></g></svg>
 </div>
 
 <button class="cartbtn" id="cartBtn" type="button" aria-label="Open your order">🧾 Order <span id="count">0</span></button>
@@ -357,11 +357,10 @@ const today=new Date().getDay();const sc=document.getElementById('sched');
 /* ---------- animation ---------- */
 const truck=document.getElementById("roadTruck");const rw=truck.querySelectorAll('.rw');const hw=document.querySelectorAll('.hw');
 if(!reduce){
- gsap.set(rw,{transformOrigin:'50% 50%'});gsap.set(hw,{transformOrigin:'50% 50%'});
  gsap.to(hw,{rotation:360,duration:1.2,repeat:-1,ease:'none',svgOrigin:'0 0'});
  // road truck follows scroll
  const track=()=>innerWidth-truck.getBoundingClientRect().width-12;
- ScrollTrigger.create({trigger:document.body,start:0,end:'max',onUpdate:s=>{gsap.set(truck,{x:s.progress*track()});const rot=s.progress*track()/ (2*Math.PI*24)*360;rw.forEach(w=>w.setAttribute('transform',`rotate(${rot} ${w.getAttribute('x')} ${w.getAttribute('y')})`))}});
+ ScrollTrigger.create({trigger:document.body,start:0,end:'max',onUpdate:s=>{gsap.set(truck,{x:s.progress*track()});const rot=s.progress*track()/ (2*Math.PI*24)*360;rw.forEach(w=>w.setAttribute('transform',`rotate(${rot})`))}});
  // reveals
  document.querySelectorAll('.reveal').forEach(el=>gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}}));
  // intro
