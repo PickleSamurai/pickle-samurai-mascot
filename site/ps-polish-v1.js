@@ -2,7 +2,7 @@
    Loaded from Webflow Site settings > Custom code > Footer. Everything is injected, so no page embed needs editing. */
 (function(){
   if(window.__psPolish) return; window.__psPolish=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b0da301ee4b3d759632b2247297e1765588701b6/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b501bde5e20ea14fc1e00999837c35d607edace0/assets/site/';
   var IG='https://www.instagram.com/thepicklesamurai/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var isHome=/^\/?$/.test(location.pathname);
@@ -185,7 +185,7 @@
       }
     } else { addThumbs(); swapFrames(); }
   }
-  (function(){var x=document.createElement('script');x.src='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@9e89e8fff6f5431ebfa97c8c2dd31b43f0f6f0ff/site/ps-scene-v1.js';x.defer=true;document.head.appendChild(x)})();
+  (function(){var x=document.createElement('script');x.src='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@dd4e54a06743cb36be3bbffa7636676f3b1c2fe7/site/ps-scene-v1.js';x.defer=true;document.head.appendChild(x)})();
   tilt();
   addEventListener('scroll',onScroll,{passive:true});
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
