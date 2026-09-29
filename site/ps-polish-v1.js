@@ -147,7 +147,7 @@
       }
     } else { addThumbs(); }
   }
-  (function(){var x=document.createElement('script');x.src='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@1d5738604cb368d65cdc9a655ef161d5d4c37d89/site/ps-scene-v1.js';x.defer=true;document.head.appendChild(x)})();
+  (function(){var x=document.createElement('script');x.src='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@68fe8827af11fb3dcd062fc9ddc6ce333a47a249/site/ps-scene-v1.js';x.defer=true;document.head.appendChild(x)})();
   tilt();
   addEventListener('scroll',onScroll,{passive:true});
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
