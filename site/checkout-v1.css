@@ -148,3 +148,7 @@ body.fx-shake{animation:fxShake .42s cubic-bezier(.36,.07,.19,.97)}
 }
 .fx-agree,.fx-card,.fx-nav{scroll-margin-bottom:190px}
 #ps-checkout{overflow-x:clip}.fx-scroll{overflow:visible}
+/* Webflow base CSS resets */
+#ps-checkout ul,#ps-checkout ol{padding-left:0;margin-bottom:0}
+#ps-checkout h1,#ps-checkout h2{margin-top:0}
+#ps-checkout .fx-card ul{margin:8px 0 4px}

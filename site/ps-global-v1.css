@@ -57,3 +57,4 @@ footer .social a{text-decoration:none}
 }
 @media (min-width:821px) and (max-width:1180px){nav[aria-label="Main"] ul{gap:20px}nav[aria-label="Main"] .btn .full{display:none}nav[aria-label="Main"] .btn .short{display:inline}}
 html,body{overflow-x:clip}
+.ps-menu ol,.ps-menu ul{padding:0;margin:0}
