@@ -45,6 +45,7 @@
    '.ps-price{margin-top:34px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;color:#A6A4AD;font-size:15px}',
    '.ps-price b{color:#F3F1EC;font-weight:600}',
    '@media(max-width:900px){.ps-steps{grid-template-columns:1fr 1fr}}',
+   '@media(max-width:600px){.ps-proc{padding-left:20px;padding-right:20px}}',
    '@media(max-width:560px){.ps-steps{grid-template-columns:1fr}.card .ps-thumb{height:150px}}',
    /* dojo banner behind CTA heading area */
    '.cta.ps-banner::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(14,14,18,.96) 0%,rgba(14,14,18,.78) 55%,rgba(14,14,18,.5) 100%),var(--bn) center/cover no-repeat;opacity:.9;pointer-events:none}',
