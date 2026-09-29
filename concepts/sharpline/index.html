@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sharpline Barbershop | Concept project by Pickle Samurai</title>
+<meta name="description" content="Concept project: a fictional barbershop website with an animated barber pole, snip-reveal headline and a working booking picker, designed by Pickle Samurai.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../assets/concept-fonts.css">
+<style>
+:root{--ink:#101114;--ink2:#181A1F;--gold:#C8A24A;--gold2:#E6C777;--cream:#F5EFE6;--red:#B3261E;--navy:#1F2A44;--muted:#A9A79F}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);scrollbar-width:none;scroll-padding-top:110px}
+html::-webkit-scrollbar{display:none}
+html.lenis,html.lenis body{height:auto}
+body{background:var(--ink);color:var(--cream);font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+h1,h2,h3{font-family:'Abril Fatface',Georgia,serif;font-weight:400;line-height:1}
+.skip{position:absolute;left:12px;top:-70px;background:var(--gold2);color:#101114;padding:10px 16px;font-weight:700;z-index:500}
+.skip:focus{top:52px}
+.ribbon{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--gold2);color:#101114;font-size:13px;font-weight:700;text-align:center;padding:9px 12px}
+.ribbon a{text-decoration:underline;text-underline-offset:3px}
+nav{position:fixed;top:var(--rb,36px);left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:14px clamp(18px,5vw,64px);background:rgba(16,17,20,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(245,239,230,.08)}
+.logo{font-family:'Abril Fatface';font-size:26px;letter-spacing:.02em}
+.logo b{color:var(--gold);font-weight:400}
+nav ul{display:flex;gap:30px;list-style:none;font-size:15px;font-weight:500}
+nav ul a{padding:6px 0;border-bottom:2px solid transparent;transition:border-color .25s}
+nav ul a:hover{border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#101114;font-weight:700;padding:14px 26px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;font-size:13px;transition:background .25s,transform .25s;will-change:transform}
+.btn:hover{background:var(--gold2);transform:translateY(-2px)}
+.btn.ghost{background:transparent;border:1.5px solid var(--cream);color:var(--cream)}
+.btn.ghost:hover{background:var(--cream);color:#101114}
+@media(max-width:820px){nav ul{display:none}}
+.btn{white-space:nowrap}
+@media(max-width:640px){.ribbon{font-size:11.5px;padding:7px 10px;line-height:1.35}.btn{padding:11px 18px;font-size:13px}.logo{font-size:20px}}
+section{padding:clamp(72px,10vw,130px) clamp(18px,5vw,64px);position:relative}
+.wrap{max-width:1180px;margin:0 auto}
+.eyebrow{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+
+/* HERO */
+.hero{min-height:100vh;padding-top:calc(var(--rb,36px) + 116px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(12px,4vw,60px);align-items:center;overflow:hidden;background:radial-gradient(900px 500px at 78% 40%,rgba(200,162,74,.16),transparent 62%),var(--ink)}
+.hero h1{font-size:clamp(46px,7.4vw,116px);margin:16px 0 26px}
+.hero h1 .l{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .w{display:inline-block;transform:translateY(105%)}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero .lead{font-size:clamp(17px,1.5vw,20px);line-height:1.6;color:var(--muted);max-width:520px}
+.hero .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.pole{justify-self:center;position:relative;width:clamp(110px,15vw,170px)}
+.pole .cap{height:26px;border-radius:50% 50% 8px 8px/100% 100% 8px 8px;background:linear-gradient(90deg,#8a6f2c,var(--gold2),#8a6f2c)}
+.pole .cap.b{border-radius:8px 8px 50% 50%/8px 8px 100% 100%}
+.pole .tube{height:clamp(320px,52vh,470px);border:6px solid #e9e4d8;border-radius:10px;background:repeating-linear-gradient(-45deg,var(--red) 0 26px,#fff 26px 52px,var(--navy) 52px 78px,#fff 78px 104px);background-size:148px 148px;animation:spin 3.4s linear infinite;box-shadow:inset 18px 0 22px rgba(255,255,255,.18),inset -18px 0 26px rgba(0,0,0,.35)}
+@keyframes spin{to{background-position:0 148px}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.pole{justify-self:start;width:96px}.pole .tube{height:220px}}
+
+/* MARQUEE */
+.marquee{background:var(--gold);color:#101114;overflow:hidden;white-space:nowrap;padding:14px 0;font-family:'Abril Fatface';font-size:clamp(20px,2.4vw,30px)}
+.marquee div{display:inline-block;animation:slide 30s linear infinite}
+.marquee span{margin:0 24px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* SERVICES */
+#services{background:var(--cream);color:#16171a}
+#services h2{font-size:clamp(44px,7vw,96px);margin-bottom:12px}
+#services .sub{color:#55534d;font-size:18px;max-width:520px;line-height:1.6;margin-bottom:38px}
+.menu{display:grid;gap:0;max-width:860px}
+.svc{display:grid;grid-template-columns:1fr auto;gap:8px 20px;padding:24px 4px;border-bottom:1px solid rgba(22,23,26,.18);position:relative;transition:padding .35s}
+.svc::before{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--red);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.svc:hover{padding-left:16px}
+.svc:hover::before{width:100%}
+.svc h3{font-size:clamp(24px,3vw,34px)}
+.svc p{grid-column:1;color:#55534d;font-size:16px;line-height:1.5;max-width:520px}
+.svc .p{font-family:'Abril Fatface';font-size:clamp(26px,3vw,38px);color:var(--red);grid-row:1/3;grid-column:2;align-self:center}
+.note{font-size:14px;color:#66645d;margin-top:22px}
+
+/* BOOKING */
+#book{background:var(--ink2)}
+#book h2{font-size:clamp(44px,7vw,96px);margin-bottom:12px}
+#book .sub{color:var(--muted);margin-bottom:34px;font-size:18px;max-width:520px;line-height:1.6}
+.booker{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,56px)}
+.card{background:rgba(245,239,230,.05);border:1px solid rgba(245,239,230,.1);border-radius:18px;padding:clamp(20px,3vw,32px)}
+.card h3{font-size:26px;margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:12px 18px;border-radius:999px;border:1.5px solid rgba(245,239,230,.3);font-weight:600;font-size:15px;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed="true"]{background:var(--gold);color:#101114;border-color:var(--gold);transform:scale(1.04)}
+.chip[disabled]{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.step{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin:22px 0 10px}
+.step:first-of-type{margin-top:0}
+label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+input{width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid rgba(245,239,230,.25);background:rgba(245,239,230,.06);color:var(--cream);font:inherit}
+input:focus{border-color:var(--gold);outline:none}
+.sum{border-top:1px dashed rgba(245,239,230,.25);margin-top:20px;padding-top:16px;font-size:17px;line-height:1.6}
+.sum b{color:var(--gold2)}
+@media(max-width:860px){.booker{grid-template-columns:1fr}}
+
+/* CRAFT */
+#craft{background:var(--navy)}
+#craft h2{font-size:clamp(40px,6vw,84px);margin-bottom:22px}
+#craft .cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:center}
+#craft p{font-size:18px;line-height:1.7;color:#d3d8e6;margin-bottom:16px}
+.razor{width:100%;height:auto}
+.razor path{stroke:var(--gold2);stroke-width:3;fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.hours{margin-top:24px;display:grid;gap:8px;font-size:17px}
+.hours div{display:flex;justify-content:space-between;border-bottom:1px solid rgba(245,239,230,.14);padding:8px 0}
+@media(max-width:860px){#craft .cols{grid-template-columns:1fr}}
+
+footer{background:#0a0b0d;padding:44px clamp(18px,5vw,64px) 40px;color:var(--muted);font-size:14px;line-height:1.7}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer strong{color:var(--cream)}
+footer a{text-decoration:underline;text-underline-offset:3px;color:var(--gold2)}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,30px);opacity:0;z-index:400;background:var(--ink);color:var(--cream);border:2px solid var(--gold);padding:14px 20px;border-radius:12px;max-width:min(92vw,520px);text-align:center;transition:.35s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.snip{position:fixed;inset:0;z-index:1000;background:var(--gold);display:grid;place-items:center;overflow:hidden}
+.snip .name{font-family:'Abril Fatface';font-size:clamp(40px,8vw,110px);color:#101114;clip-path:inset(0 50% 0 50%)}
+.snip .line{position:absolute;left:50%;top:0;bottom:0;width:3px;background:#101114;transform:scaleY(0);transform-origin:top}
+@media (prefers-reduced-motion:reduce){.snip{display:none}.hero h1 .w{transform:none!important}.marquee div,.pole .tube{animation:none}.reveal{opacity:1!important;transform:none!important}}
+.reveal{opacity:0;transform:translateY(32px)}
+html,body{overflow-x:clip}
+*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="ribbon">Concept project: Sharpline is a fictional business, designed by <a href="https://www.picklesamurai.com/work" target="_top" rel="noopener">Pickle Samurai</a>. Bookings here are a demo; nothing is sent.</div>
+<div class="snip" id="snip" aria-hidden="true"><div class="line" id="snipLine"></div><div class="name" id="snipName">Sharpline</div></div>
+
+<nav aria-label="Main">
+  <a class="logo" href="#top" aria-label="Sharpline home">Sharp<b>line</b></a>
+  <ul><li><a href="#services">Services</a></li><li><a href="#book">Book</a></li><li><a href="#craft">The shop</a></li></ul>
+  <a class="btn" href="#book">Book a chair</a>
+</nav>
+
+<main id="main" tabindex="-1">
+<section class="hero" id="top">
+  <div>
+    <p class="eyebrow">Barbers · Fades · Hot-towel shaves · Concept city</p>
+    <h1 aria-label="Cut clean. Look sharp."><span class="l"><span class="w">Cut clean.</span></span><span class="l"><span class="w"><em>Look sharp.</em></span></span></h1>
+    <p class="lead">Precision fades, classic cuts and hot-towel shaves in a chair that never rushes you. Pick a time, walk in on time, walk out sharp.</p>
+    <div class="row"><a class="btn" href="#book">Book a chair</a><a class="btn ghost" href="#services">See prices</a></div>
+  </div>
+  <div class="pole" aria-hidden="true"><div class="cap"></div><div class="tube"></div><div class="cap b"></div></div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span>Skin fades</span>✂<span>Beard sculpting</span>✂<span>Hot-towel shaves</span>✂<span>Kids cuts</span>✂<span>Line-ups</span>✂
+  <span>Skin fades</span>✂<span>Beard sculpting</span>✂<span>Hot-towel shaves</span>✂<span>Kids cuts</span>✂<span>Line-ups</span>✂
+</div></div>
+
+<section id="services">
+  <div class="wrap">
+    <h2 class="reveal">Services &amp; prices</h2>
+    <p class="sub reveal">Clear prices, no surprises. (Sample prices for a fictional shop.)</p>
+    <div class="menu" id="menu"></div>
+    <p class="note">Prices are for demonstration only. Tip is not included.</p>
+  </div>
+</section>
+
+<section id="book">
+  <div class="wrap">
+    <h2 class="reveal">Book a chair</h2>
+    <p class="sub reveal">Choose a service, day and time. This is a working demo of a booking picker: it confirms on screen but nothing is sent or saved.</p>
+    <div class="booker reveal">
+      <div class="card">
+        <p class="step">1 · Service</p><div class="chips" id="cSvc" role="group" aria-label="Service"></div>
+        <p class="step">2 · Day</p><div class="chips" id="cDay" role="group" aria-label="Day"></div>
+        <p class="step">3 · Time</p><div class="chips" id="cTime" role="group" aria-label="Time"></div>
+      </div>
+      <div class="card">
+        <h3>Your booking</h3>
+        <div class="sum" id="sum" aria-live="polite">Choose a service, day and time.</div>
+        <label for="nm">Your name</label><input id="nm" autocomplete="name" placeholder="First and last name">
+        <label for="ph">Phone (optional)</label><input id="ph" type="tel" autocomplete="tel" placeholder="For a reminder text">
+        <p class="note" style="color:var(--muted);margin-top:14px">Demo only. No data is stored or transmitted.</p>
+        <button class="btn" id="confirm" type="button" style="margin-top:16px">Confirm booking</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="craft">
+  <div class="wrap cols">
+    <div>
+      <h2 class="reveal">The craft of a<br>clean line.</h2>
+      <p class="reveal">Every cut starts with a conversation and ends with a mirror check. Straight razors, warm towels, and time to do it right. (Fictional shop copy written for this concept.)</p>
+      <div class="hours reveal"><div><span>Tue - Fri</span><span>10:00 - 7:00</span></div><div><span>Saturday</span><span>9:00 - 5:00</span></div><div><span>Sun - Mon</span><span>Closed</span></div></div>
+    </div>
+    <svg class="razor reveal" viewBox="0 0 420 300" role="img" aria-label="Line drawing of a straight razor">
+      <path id="r1" pathLength="1" d="M40 220 C 110 200, 190 170, 300 90 L 340 110 C 250 200, 150 250, 60 250 Z"/>
+      <path id="r2" pathLength="1" d="M300 90 L 340 40 L 380 60 L 340 110"/>
+      <path id="r3" pathLength="1" d="M40 220 L 24 250 L 60 250"/>
+      <path id="r4" pathLength="1" d="M90 214 C 160 196, 230 160, 292 100"/>
+    </svg>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Sharpline Barbershop</strong><br>Fictional business for demonstration. Services, prices and hours are invented.</div>
+    <div><strong>About this demo</strong><br>Designed and built by <a href="../../index.html">Pickle Samurai</a>. <a href="../../index.html#contact">Want a site like this?</a></div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>(function(){var r=document.querySelector('.ribbon');function m(){document.documentElement.style.setProperty('--rb',r.offsetHeight+'px')}m();addEventListener('resize',m);addEventListener('load',m)})();</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+gsap.registerPlugin(ScrollTrigger);
+if(!reduce){const lenis=new Lenis({duration:1.1});lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
+ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length>1&&document.querySelector(id)){e.preventDefault();lenis.scrollTo(id,{offset:-90})}}));}
+
+/* services */
+const SVC=[['Classic Cut','Scissor or clipper cut, neck shave and style.',35],['Skin Fade','Precision fade blended to the skin, finished with a line-up.',40],['Beard Sculpt','Shape, trim and hot-towel finish.',25],['The Full Sharp','Cut + beard + hot-towel shave. Our most-booked service.',65],['Hot-Towel Shave','Straight-razor shave with warm towels and oil.',40],['Kids Cut (12 and under)','Patient, quick and tidy.',25]];
+const menu=document.getElementById('menu');
+SVC.forEach(([n,d,p])=>{const el=document.createElement('div');el.className='svc reveal';el.innerHTML=`<h3>${n}</h3><span class="p">$${p}</span><p>${d}</p>`;menu.appendChild(el)});
+
+/* booking picker */
+const DAYS=[];const d0=new Date();
+for(let i=0,k=0;k<6;i++){const d=new Date(d0.getFullYear(),d0.getMonth(),d0.getDate()+i);const w=d.getDay();if(w===0||w===1)continue;DAYS.push(d);k++}
+const TIMES=['10:00 am','11:00 am','12:00 pm','1:00 pm','2:00 pm','3:00 pm','4:00 pm','5:00 pm','6:00 pm'];
+const sel={svc:null,day:null,time:null};
+const fmt=d=>d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+function chips(id,items,key,label){const box=document.getElementById(id);box.innerHTML='';items.forEach((it,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';const text=label(it,i);b.textContent=text;
+  const taken=(key==='time')&&((sel.day!==null)&&((sel.day*3+i*7)%5===0)); // deterministic "already booked" slots for the demo
+  if(taken){b.disabled=true;b.setAttribute('aria-label',text+' (unavailable)')}
+  b.setAttribute('aria-pressed',sel[key]===i);b.onclick=()=>{sel[key]=i;if(key==='day')sel.time=null;render()};box.appendChild(b)})}
+function render(){chips('cSvc',SVC,'svc',s=>`${s[0]} · $${s[2]}`);chips('cDay',DAYS,'day',d=>fmt(d));chips('cTime',TIMES,'time',t=>t);
+ const s=document.getElementById('sum');
+ s.innerHTML=(sel.svc===null||sel.day===null||sel.time===null)?'Choose a service, day and time.':`<b>${SVC[sel.svc][0]}</b><br>${fmt(DAYS[sel.day])} at ${TIMES[sel.time]}<br>Total: <b>$${SVC[sel.svc][2]}</b> (pay in shop)`}
+render();
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),3800)}
+document.getElementById('confirm').onclick=()=>{if(sel.svc===null||sel.day===null||sel.time===null){toast('Pick a service, day and time first.');return}
+ toast('Concept project: booking confirmed on screen only. Nothing was sent or saved.')};
+
+/* animation */
+if(!reduce){
+ document.querySelectorAll('.reveal').forEach(el=>gsap.to(el,{opacity:1,y:0,duration:.85,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}}));
+ gsap.utils.toArray('.razor path').forEach((p,i)=>gsap.to(p,{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'#craft',start:'top 70%',end:'center 40%',scrub:.6}}));
+ document.documentElement.style.overflow='hidden';
+ const tl=gsap.timeline({defaults:{ease:'power3.inOut'}});
+ tl.to('#snipLine',{scaleY:1,duration:.5})
+   .to('#snipName',{clipPath:'inset(0 0% 0 0%)',duration:.9},'-=.1')
+   .to('#snip',{yPercent:-100,duration:.9,delay:.35})
+   .set('#snip',{display:'none'})
+   .add(()=>{document.documentElement.style.overflow=''})
+   .to('.hero h1 .w',{y:0,duration:1,stagger:.14,ease:'expo.out'},'-=.5')
+   .from('.hero .eyebrow,.hero .lead,.hero .row,.pole',{opacity:0,y:24,duration:.8,stagger:.08},'-=.6');
+}
+</script>
+</body>
+</html>
