@@ -1,0 +1,59 @@
+/* Pickle Samurai — site-wide extras (all pages). Loaded from Webflow Site settings > Custom code > Head */
+@import url('https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@62140865b4c70c9739d859a1c40c8f2405474282/site/social-v1.css');
+
+/* ---------- ambient glow on every page (home already has its own #glow) ---------- */
+.ps-glow{position:fixed;z-index:0;pointer-events:none;border-radius:50%;filter:blur(90px);
+  width:60vmin;height:60vmin;right:6vw;top:18vh;opacity:.32;
+  background:radial-gradient(circle,var(--accent,#C0392B),transparent 70%);
+  animation:psGlowDrift 14s ease-in-out infinite alternate}
+.ps-glow.b{right:auto;left:-8vmin;top:auto;bottom:6vh;width:48vmin;height:48vmin;opacity:.22;
+  background:radial-gradient(circle,#7B3FE4,transparent 70%);animation-duration:18s;animation-delay:-6s}
+@keyframes psGlowDrift{0%{transform:translate(0,0) scale(1);opacity:.3}50%{opacity:.5}100%{transform:translate(-6vmin,5vmin) scale(1.12);opacity:.36}}
+body.ps-has-glow > *:not(.ps-glow):not(.ps-menu):not(script):not(style){position:relative;z-index:1}
+body.ps-has-glow > nav[aria-label="Main"]{position:sticky;z-index:20}
+@media (max-width:820px){.ps-glow{width:90vw;height:90vw;right:-20vw;top:8vh}.ps-glow.b{width:80vw;height:80vw}}
+
+/* ---------- mobile menu ---------- */
+.ps-burger{display:none;width:46px;height:46px;margin-left:10px;border:1px solid rgba(233,184,114,.4);background:rgba(23,23,29,.7);color:#F3F1EC;
+  position:relative;cursor:pointer;justify-self:end;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.ps-burger i{position:absolute;left:12px;right:12px;height:2px;background:currentColor;transition:transform .35s cubic-bezier(.7,0,.2,1),opacity .2s,top .35s}
+.ps-burger i:nth-child(1){top:16px}.ps-burger i:nth-child(2){top:22px;right:18px}.ps-burger i:nth-child(3){top:28px}
+.ps-burger[aria-expanded="true"] i:nth-child(1){top:22px;transform:rotate(45deg)}
+.ps-burger[aria-expanded="true"] i:nth-child(2){opacity:0}
+.ps-burger[aria-expanded="true"] i:nth-child(3){top:22px;transform:rotate(-45deg)}
+@media (max-width:820px){
+  .ps-burger{display:block}
+  nav[aria-label="Main"]{grid-template-columns:1fr auto auto!important}
+}
+.ps-menu{position:fixed;inset:0;z-index:90;background:#0E0E12;display:flex;flex-direction:column;justify-content:center;padding:90px 28px 40px;
+  clip-path:circle(0% at calc(100% - 44px) 40px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);visibility:hidden;overflow:auto}
+.ps-menu.open{clip-path:circle(150% at calc(100% - 44px) 40px);visibility:visible}
+.ps-menu::before{content:'';position:absolute;right:-30vw;top:10vh;width:90vw;height:90vw;border-radius:50%;filter:blur(80px);opacity:.35;
+  background:radial-gradient(circle,var(--accent,#C0392B),transparent 70%);pointer-events:none}
+.ps-menu .slash{position:absolute;left:-10%;top:24%;width:120%;height:2px;background:var(--accent,#C0392B);box-shadow:0 0 24px var(--accent,#C0392B);transform:rotate(-12deg) scaleX(0);transform-origin:left;transition:transform .6s .25s cubic-bezier(.7,0,.2,1)}
+.ps-menu.open .slash{transform:rotate(-12deg) scaleX(1)}
+.ps-menu ol{list-style:none;counter-reset:m;position:relative}
+.ps-menu li{counter-increment:m;overflow:hidden}
+.ps-menu li a{display:flex;align-items:baseline;gap:14px;font-family:'Bebas Neue',Impact,sans-serif;font-size:clamp(44px,13vw,72px);line-height:1.02;color:#F3F1EC;text-decoration:none;text-transform:uppercase;
+  transform:translateY(105%);transition:transform .6s cubic-bezier(.2,.8,.2,1),color .3s}
+.ps-menu li a::before{content:'0' counter(m);font-family:Inter,system-ui,sans-serif;font-size:12px;letter-spacing:.2em;color:#E9B872}
+.ps-menu li a:active,.ps-menu li a:hover{color:#9DC63B}
+.ps-menu.open li a{transform:none}
+.ps-menu.open li:nth-child(1) a{transition-delay:.18s}.ps-menu.open li:nth-child(2) a{transition-delay:.24s}.ps-menu.open li:nth-child(3) a{transition-delay:.30s}
+.ps-menu.open li:nth-child(4) a{transition-delay:.36s}.ps-menu.open li:nth-child(5) a{transition-delay:.42s}.ps-menu.open li:nth-child(6) a{transition-delay:.48s}.ps-menu.open li:nth-child(7) a{transition-delay:.54s}
+.ps-menu .foot{margin-top:34px;display:flex;flex-direction:column;gap:18px;opacity:0;transform:translateY(16px);transition:opacity .5s .55s,transform .5s .55s;position:relative}
+.ps-menu.open .foot{opacity:1;transform:none}
+.ps-menu .foot .btn{align-self:flex-start;justify-self:auto}
+.ps-menu .foot small{color:#A6A4AD;font-size:13px}
+html.ps-lock,html.ps-lock body{overflow:hidden!important}
+@media (min-width:821px){.ps-menu{display:none}}
+
+/* ---------- footer socials (injected when a page has none) ---------- */
+footer .social a{text-decoration:none}
+
+@media (prefers-reduced-motion:reduce){
+  .ps-glow{animation:none}
+  .ps-menu,.ps-menu li a,.ps-menu .foot,.ps-menu .slash{transition:none!important}
+}
+@media (min-width:821px) and (max-width:1180px){nav[aria-label="Main"] ul{gap:20px}nav[aria-label="Main"] .btn .full{display:none}nav[aria-label="Main"] .btn .short{display:inline}}
+html,body{overflow-x:clip}
