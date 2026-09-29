@@ -9,7 +9,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
    - head/neck look-at no longer accumulates rotation (fixes head glitch)
    - mobile: auto look-around, tap-to-slash, tap mascot to spin, reveal stagger */
 
-const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@20656dd9c19a84d085ac2c880c5e7fe856930a95/pickle-samurai-idle-web-hq.glb';
+const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@main/pickle-samurai-idle-web-hq-v2.glb';
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 // MUST match the CSS media query in ps-v2.css
