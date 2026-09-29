@@ -17,14 +17,15 @@ var CONFIG={
   termsUrl:'/terms'
 };
 var STRIPE_LINKS={
-  'gbp|none':'',
-  'gbp|gbpcare':'',
-  'ronin|guard':'',
-  'ronin|dojo':'',
-  'ronin|shogunc':'',
-  'samurai|dojo':'',
-  'samurai|shogunc':'',
-  'shogun|shogunc':''
+  /* Today's payment is the one-time build price. The chosen care plan is recorded in client_reference_id and billed after launch (starts 30 days after checkout). */
+  'gbp|none':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
+  'gbp|gbpcare':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
+  'ronin|guard':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'ronin|dojo':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'ronin|shogunc':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'samurai|dojo':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
+  'samurai|shogunc':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
+  'shogun|shogunc':'https://buy.stripe.com/14A6oB7QG7wqgLW1V8bsc03'
 };
 var BUILDS=[
   {id:'gbp',name:'GBP Tune-Up',kanji:'刃',tag:'Get found locally',price:350,time:'About 1 week',
@@ -83,7 +84,7 @@ root.innerHTML=
     '<div class="fx-tot"><span>Due today</span><strong class="fx-today">$0</strong></div>'+
     '<div class="fx-tot m"><span>Monthly</span><strong class="fx-monthly">—</strong></div>'+
     '<button type="button" class="fx-go btn" disabled>Choose a package</button>'+
-    '<p class="fx-safe"><i aria-hidden="true"></i>Secure payment by Stripe. We never see or store your card.</p>'+
+    '<p class="fx-safe"><i aria-hidden="true"></i>Secure payment by Stripe. We never see or store your card. Your monthly care plan is confirmed by email and billed starting 30 days after checkout.</p>'+
   '</aside>'+
 '</div>'+
 '<div class="fx-cut" aria-hidden="true"><canvas></canvas></div>'+
