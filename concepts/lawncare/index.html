@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fresh Stripe Lawn Care | Concept project by Pickle Samurai</title>
+<meta name="description" content="Concept project: a fictional lawn care website with an instant quote estimator, before-and-after slider and service-day checker, designed by Pickle Samurai.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../assets/concept-fonts.css">
+<style>
+:root{--forest:#123521;--lawn:#2E7D32;--lawn2:#3E9B44;--lime:#B7E36B;--sun:#FFC940;--cream:#F6F3E8;--soil:#4A3521;--ink:#0D2417;--muted:#5C6B5F}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--forest);scrollbar-width:none;scroll-padding-top:110px}
+html::-webkit-scrollbar{display:none}
+html.lenis,html.lenis body{height:auto}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+h1,h2,h3{font-family:'Bowlby One',Impact,sans-serif;font-weight:400;line-height:1.02}
+.skip{position:absolute;left:12px;top:-70px;background:var(--sun);color:#0D2417;padding:10px 16px;font-weight:700;z-index:500}
+.skip:focus{top:52px}
+.ribbon{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--sun);color:#0D2417;font-size:13px;font-weight:700;text-align:center;padding:9px 12px}
+.ribbon a{text-decoration:underline;text-underline-offset:3px}
+nav{position:fixed;top:var(--rb,36px);left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px clamp(18px,5vw,64px);background:rgba(18,53,33,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--cream)}
+.logo{font-family:'Bowlby One';font-size:22px;letter-spacing:.01em;white-space:nowrap}
+.logo b{color:var(--lime);font-weight:400}
+nav ul{display:flex;gap:28px;list-style:none;font-size:15px;font-weight:600}
+nav ul a{padding:6px 0;border-bottom:2px solid transparent;transition:border-color .25s}
+nav ul a:hover{border-color:var(--lime)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--sun);color:#0D2417;font-weight:800;padding:14px 26px;border-radius:999px;letter-spacing:.04em;font-size:14px;white-space:nowrap;transition:background .25s,transform .25s}
+.btn:hover{background:#FFD866;transform:translateY(-2px)}
+.btn.ghost{background:transparent;border:2px solid var(--cream);color:var(--cream)}
+.btn.ghost:hover{background:var(--cream);color:#0D2417}
+@media(max-width:820px){nav ul{display:none}}
+@media(max-width:640px){.ribbon{font-size:11.5px;padding:7px 10px;line-height:1.35}.btn{padding:11px 18px;font-size:13px}.logo{font-size:18px}}
+section{padding:clamp(72px,10vw,120px) clamp(18px,5vw,64px);position:relative}
+.wrap{max-width:1180px;margin:0 auto;min-width:0}
+.eyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+
+/* HERO */
+.hero{min-height:100vh;padding-top:calc(var(--rb,36px) + 120px);padding-bottom:0;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;color:var(--cream);background:repeating-linear-gradient(90deg,#1f6b2a 0 70px,#25792f 70px 140px)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 75% 30%,rgba(255,201,64,.28),transparent 60%),linear-gradient(180deg,rgba(18,53,33,.55),rgba(18,53,33,.1) 60%,rgba(18,53,33,.5));pointer-events:none}
+.hero .in{position:relative;max-width:1180px;width:100%;margin:0 auto;min-width:0}
+.hero .eyebrow{color:var(--lime)}
+.hero h1{font-size:clamp(30px,10.4vw,108px);margin:16px 0 24px}
+.hero h1 .l{display:block;overflow:hidden;padding-bottom:.08em}
+.hero h1 .w{display:inline-block;transform:translateY(105%)}
+.hero h1 em{font-style:normal;color:var(--sun)}
+.hero .lead{font-size:clamp(17px,1.5vw,20px);line-height:1.6;max-width:520px;color:#E8F0E2}
+.hero .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.track{position:relative;height:120px;margin-top:36px;overflow:hidden}
+.track .cut{position:absolute;left:0;right:0;bottom:0;height:64px;background:repeating-linear-gradient(90deg,#3E9B44 0 70px,#4CAF50 70px 140px)}
+.mower{position:absolute;bottom:14px;left:-160px;width:150px;animation:drive 9s linear infinite}
+@keyframes drive{to{left:calc(100% + 20px)}}
+.mower svg{width:100%;height:auto;display:block}
+
+/* MARQUEE */
+.marquee{background:var(--sun);color:#0D2417;overflow:hidden;white-space:nowrap;padding:14px 0;font-family:'Bowlby One';font-size:clamp(18px,2.2vw,28px)}
+.marquee div{display:inline-block;animation:slide 32s linear infinite}
+.marquee span{margin:0 22px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* SERVICES */
+#services h2,#quote h2,#ba h2,#area h2{font-size:clamp(34px,5.6vw,76px);margin-bottom:14px}
+.sub{color:var(--muted);font-size:18px;max-width:560px;line-height:1.6;margin-bottom:38px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.svc{background:#fff;border-radius:22px;padding:26px;border:2px solid rgba(18,53,33,.08);transition:transform .3s,border-color .3s;min-width:0}
+.svc:hover{transform:translateY(-6px);border-color:var(--lawn2)}
+.svc .ic{width:54px;height:54px;border-radius:16px;background:var(--lime);display:grid;place-items:center;margin-bottom:16px}
+.svc .ic svg{width:30px;height:30px}
+.svc h3{font-size:22px;margin-bottom:8px}
+.svc p{color:var(--muted);line-height:1.55;font-size:16px}
+.svc .from{margin-top:14px;font-weight:800;color:var(--lawn)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+/* QUOTE */
+#quote{background:var(--forest);color:var(--cream)}
+#quote .sub{color:#B9CDBB}
+.quote{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(22px,4vw,56px);align-items:start}
+.card{background:rgba(246,243,232,.07);border:1px solid rgba(246,243,232,.14);border-radius:22px;padding:clamp(20px,3vw,32px);min-width:0}
+.card h3{font-size:22px;margin-bottom:18px}
+.step{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:800;margin:24px 0 10px}
+.step:first-of-type{margin-top:0}
+.size{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.size output{font-family:'Bowlby One';font-size:28px;color:var(--sun)}
+input[type=range]{width:100%;accent-color:var(--sun);height:32px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:12px 18px;border-radius:999px;border:2px solid rgba(246,243,232,.3);font-weight:700;font-size:15px;transition:background .2s,color .2s,border-color .2s}
+.chip:hover{border-color:var(--lime)}
+.chip[aria-pressed="true"]{background:var(--lime);color:#0D2417;border-color:var(--lime)}
+.est{font-size:17px;line-height:1.7}
+.est .big{font-family:'Bowlby One';font-size:clamp(30px,4vw,44px);color:var(--sun);display:block;margin:4px 0 2px;line-height:1.1}
+.est .row2{display:flex;justify-content:space-between;gap:12px;border-top:1px dashed rgba(246,243,232,.25);padding:10px 0;flex-wrap:wrap}
+.fine{font-size:13px;color:#9FB6A3;margin-top:14px;line-height:1.5}
+@media(max-width:860px){.quote{grid-template-columns:minmax(0,1fr)}}
+
+/* BEFORE / AFTER */
+#ba{background:var(--cream)}
+.ba{position:relative;max-width:900px;border-radius:24px;overflow:hidden;aspect-ratio:16/9;box-shadow:0 20px 50px rgba(18,53,33,.25);background:#000;touch-action:pan-y}
+.ba svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ba .after{clip-path:inset(0 0 0 var(--p,50%))}
+.ba .tagb,.ba .taga{position:absolute;top:14px;padding:6px 14px;border-radius:999px;font-weight:800;font-size:13px;letter-spacing:.08em;background:rgba(13,36,23,.8);color:#fff;z-index:2}
+.ba .tagb{left:14px}.ba .taga{right:14px}
+.ba .bar{position:absolute;top:0;bottom:0;left:var(--p,50%);width:4px;margin-left:-2px;background:#fff;z-index:2;pointer-events:none}
+.ba .bar:after{content:"\2194";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#fff;color:#0D2417;display:grid;place-items:center;font-weight:800;font-size:22px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:3;margin:0}
+.ba:focus-within{outline:3px solid var(--sun);outline-offset:3px}
+.note{font-size:14px;color:var(--muted);margin-top:18px}
+
+/* AREA */
+#area{background:var(--lime)}
+#area .sub{color:#2c4b33}
+.area{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(22px,4vw,56px);align-items:start}
+.zip{display:flex;gap:10px;flex-wrap:wrap}
+.zip input{flex:1 1 160px;min-width:0;padding:15px 18px;border-radius:999px;border:2px solid #0D2417;background:#fff;font:inherit;font-size:17px;color:#0D2417}
+.zip input:focus{outline:3px solid var(--sun);outline-offset:2px}
+.zip .btn{background:#0D2417;color:var(--cream)}
+.zip .btn:hover{background:#1c4a2c}
+.result{margin-top:20px;font-size:18px;line-height:1.55;min-height:56px;background:#fff;border-radius:18px;padding:18px 20px}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.day{background:#fff;border-radius:16px;padding:14px 4px;text-align:center;font-weight:800;transition:background .3s,color .3s,transform .3s}
+.day small{display:block;font-weight:600;font-size:12px;color:#55665a;margin-top:4px}
+.day.on{background:#0D2417;color:var(--sun);transform:translateY(-6px)}
+.day.on small{color:var(--lime)}
+@media(max-width:860px){.area{grid-template-columns:minmax(0,1fr)}}
+
+footer{background:#0A1C11;padding:44px clamp(18px,5vw,64px) 40px;color:#9FB6A3;font-size:14px;line-height:1.7}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer strong{color:var(--cream)}
+footer a{text-decoration:underline;text-underline-offset:3px;color:var(--lime)}
+.reveal{opacity:0;transform:translateY(30px)}
+@media (prefers-reduced-motion:reduce){.hero h1 .w{transform:none!important}.marquee div,.mower{animation:none}.mower{left:60%}.reveal{opacity:1!important;transform:none!important}}
+html,body{overflow-x:clip}
+*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="ribbon">Concept project: Fresh Stripe is a fictional business, designed by <a href="https://www.picklesamurai.com/work" target="_top" rel="noopener">Pickle Samurai</a>. Quotes and scheduling here are a demo; nothing is sent.</div>
+
+<nav aria-label="Main">
+  <a class="logo" href="#top" aria-label="Fresh Stripe home">Fresh<b>Stripe</b></a>
+  <ul><li><a href="#services">Services</a></li><li><a href="#quote">Quote</a></li><li><a href="#ba">Results</a></li><li><a href="#area">Service area</a></li></ul>
+  <a class="btn" href="#quote">Get a quote</a>
+</nav>
+
+<main id="main" tabindex="-1">
+<section class="hero" id="top">
+  <div class="in">
+    <p class="eyebrow">Mowing · Edging · Yard care · Concept City</p>
+    <h1 aria-label="A lawn you're proud of."><span class="l"><span class="w">A lawn you're</span></span><span class="l"><span class="w"><em>proud</em> of.</span></span></h1>
+    <p class="lead">Reliable weekly mowing, crisp edges and honest prices. Get an instant estimate, see your service day, and stop thinking about your yard.</p>
+    <div class="row"><a class="btn" href="#quote">Get an instant quote</a><a class="btn ghost" href="#services">See services</a></div>
+  </div>
+  <div class="track" aria-hidden="true">
+    <div class="cut"></div>
+    <div class="mower">
+      <svg viewBox="0 0 150 90" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="30" width="96" height="34" rx="10" fill="#E5402B"/><rect x="26" y="22" width="52" height="14" rx="6" fill="#B92F1E"/><path d="M104 30 L128 8 L136 12 L114 40 Z" fill="#2b2b2b"/><circle cx="34" cy="70" r="14" fill="#1b1b1b"/><circle cx="34" cy="70" r="6" fill="#bbb"/><circle cx="100" cy="72" r="11" fill="#1b1b1b"/><circle cx="100" cy="72" r="5" fill="#bbb"/><rect x="40" y="40" width="30" height="8" rx="4" fill="#FFC940"/></svg>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span>Weekly mowing</span>✿<span>Sharp edges</span>✿<span>Leaf cleanup</span>✿<span>Fertilizer plans</span>✿<span>Hedge trimming</span>✿<span>Fresh mulch</span>✿
+  <span>Weekly mowing</span>✿<span>Sharp edges</span>✿<span>Leaf cleanup</span>✿<span>Fertilizer plans</span>✿<span>Hedge trimming</span>✿<span>Fresh mulch</span>✿
+</div></div>
+
+<section id="services">
+  <div class="wrap">
+    <h2 class="reveal">What we do</h2>
+    <p class="sub reveal">Six services, clear starting prices. (Sample prices for a fictional company.)</p>
+    <div class="grid" id="svcGrid"></div>
+    <p class="note">Prices are for demonstration only and vary by yard size.</p>
+  </div>
+</section>
+
+<section id="quote">
+  <div class="wrap">
+    <h2 class="reveal">Instant quote</h2>
+    <p class="sub reveal">Slide to your yard size and pick what you need. This is a working demo of an estimator: it calculates on screen and nothing is sent or saved.</p>
+    <div class="quote reveal">
+      <div class="card">
+        <p class="step">1 · Lawn size</p>
+        <div class="size"><label for="sq">Approximate lawn area</label><output id="sqOut" for="sq">6,000 sq ft</output></div>
+        <input id="sq" type="range" min="1500" max="20000" step="500" value="6000">
+        <p class="step">2 · Mowing plan</p>
+        <div class="chips" id="cFreq" role="group" aria-label="Mowing plan"></div>
+        <p class="step">3 · Add-ons</p>
+        <div class="chips" id="cAdd" role="group" aria-label="Add-on services"></div>
+      </div>
+      <div class="card">
+        <h3>Your estimate</h3>
+        <div class="est" id="est" aria-live="polite"></div>
+        <p class="fine">Demo estimate only, based on invented sample rates. A real quote would confirm your lot size on a satellite map before booking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ba">
+  <div class="wrap">
+    <h2 class="reveal">Before and after</h2>
+    <p class="sub reveal">Drag the slider (or use the arrow keys) to see the difference one visit makes. Illustration for this concept, not a customer photo.</p>
+    <div class="ba reveal" id="baBox">
+      <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of an overgrown, patchy yard">
+        <rect width="800" height="450" fill="#9CC7EA"/><circle cx="660" cy="80" r="46" fill="#FFE27A"/>
+        <rect y="230" width="800" height="220" fill="#6E8B3D"/>
+        <g fill="#8a7a3a" opacity=".7"><ellipse cx="180" cy="330" rx="90" ry="26"/><ellipse cx="520" cy="380" rx="110" ry="30"/><ellipse cx="690" cy="300" rx="60" ry="18"/></g>
+        <g fill="#4d6b25"><path d="M40 260 l8-60 8 60z M70 265 l10-80 10 80z M120 258 l7-55 7 55z M300 262 l9-70 9 70z M360 266 l8-60 8 60z M470 262 l10-75 10 75z M560 258 l8-62 8 62z M640 266 l9-70 9 70z M730 262 l8-58 8 58z M230 300 l9-72 9 72z M420 320 l10-78 10 78z M110 340 l9-70 9 70z M600 350 l10-80 10 80z"/></g>
+        <g fill="#f5f0c8"><circle cx="150" cy="300" r="7"/><circle cx="410" cy="350" r="6"/><circle cx="620" cy="320" r="7"/><circle cx="260" cy="380" r="6"/></g>
+        <rect x="0" y="222" width="800" height="14" fill="#5b4a2a"/>
+      </svg>
+      <svg class="after" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of a freshly mowed striped lawn">
+        <rect width="800" height="450" fill="#9CC7EA"/><circle cx="660" cy="80" r="46" fill="#FFE27A"/>
+        <defs><pattern id="st" width="120" height="450" patternUnits="userSpaceOnUse"><rect width="60" height="450" fill="#2E8B3A"/><rect x="60" width="60" height="450" fill="#3FA34B"/></pattern></defs>
+        <rect y="230" width="800" height="220" fill="url(#st)"/>
+        <rect x="0" y="222" width="800" height="14" fill="#8a6b3f"/>
+        <rect x="0" y="236" width="800" height="6" fill="#1f6b2a"/>
+        <g fill="#E85D9A"><circle cx="130" cy="252" r="7"/><circle cx="460" cy="252" r="7"/><circle cx="700" cy="252" r="7"/></g>
+        <g fill="#FFC940"><circle cx="230" cy="255" r="6"/><circle cx="570" cy="255" r="6"/></g>
+      </svg>
+      <span class="tagb">BEFORE</span><span class="taga">AFTER</span>
+      <div class="bar" aria-hidden="true"></div>
+      <input id="baRange" type="range" min="0" max="100" value="50" aria-label="Before and after slider">
+    </div>
+  </div>
+</section>
+
+<section id="area">
+  <div class="wrap">
+    <h2 class="reveal">Your service day</h2>
+    <p class="sub reveal">Type a ZIP code to see if we cover it and which weekday your crew comes. Demo ZIPs for Concept City: 00101, 00102, 00103, 00104, 00105.</p>
+    <div class="area reveal">
+      <div>
+        <form class="zip" id="zipForm" novalidate>
+          <label for="zip" style="position:absolute;left:-9999px">ZIP code</label>
+          <input id="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="ZIP code, e.g. 00101">
+          <button class="btn" type="submit">Check</button>
+        </form>
+        <div class="result" id="zipRes" aria-live="polite">Enter a ZIP code above.</div>
+      </div>
+      <div class="week" id="week" aria-label="Weekly route days"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Fresh Stripe Lawn Care</strong><br>Fictional business for demonstration. Services, prices, ZIP codes and schedules are invented.</div>
+    <div><strong>About this demo</strong><br>Designed and built by <a href="https://www.picklesamurai.com/" target="_top" rel="noopener">Pickle Samurai</a>. <a href="https://www.picklesamurai.com/#contact" target="_top" rel="noopener">Want a site like this?</a></div>
+  </div>
+</footer>
+
+<script>(function(){var r=document.querySelector('.ribbon');function m(){document.documentElement.style.setProperty('--rb',r.offsetHeight+'px')}m();addEventListener('resize',m);addEventListener('load',m)})();</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+gsap.registerPlugin(ScrollTrigger);
+if(!reduce){const lenis=new Lenis({duration:1.1});lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
+ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length>1&&document.querySelector(id)){e.preventDefault();lenis.scrollTo(id,{offset:-90})}}));}
+
+/* services */
+const ICON={mow:'<path d="M4 20h16M6 20V10l6-6 6 6v10" fill="none" stroke="#123521" stroke-width="2" stroke-linejoin="round"/>',feed:'<path d="M12 3c4 4 6 7 6 10a6 6 0 0 1-12 0c0-3 2-6 6-10z" fill="none" stroke="#123521" stroke-width="2"/>',leaf:'<path d="M5 19C5 9 11 5 19 5c0 8-4 14-14 14zM5 19l8-8" fill="none" stroke="#123521" stroke-width="2" stroke-linecap="round"/>',hedge:'<path d="M3 18h18M5 18v-6h4v6M10 18V8h4v10M15 18v-4h4v4" fill="none" stroke="#123521" stroke-width="2" stroke-linejoin="round"/>',mulch:'<ellipse cx="12" cy="15" rx="8" ry="4" fill="none" stroke="#123521" stroke-width="2"/><path d="M12 11V5M9 7l3-3 3 3" fill="none" stroke="#123521" stroke-width="2" stroke-linecap="round"/>',air:'<path d="M6 5v14M12 5v14M18 5v14M4 9h4M10 15h4M16 9h4" fill="none" stroke="#123521" stroke-width="2" stroke-linecap="round"/>'};
+const SERV=[['mow','Mowing &amp; edging','Weekly or every-other-week cuts with crisp edges and blown-clean walks.','From $40 a visit'],['feed','Fertilize &amp; weed control','A four-step seasonal plan to keep grass thick and weeds out.','From $65 a visit'],['leaf','Leaf cleanup','Fall clear-outs, bagged or hauled, so your lawn can breathe.','From $110'],['hedge','Hedge trimming','Shaped, tidy hedges and shrubs without the ladder.','From $65'],['mulch','Mulch &amp; beds','Fresh mulch, clean bed edges and weed pulling for a finished look.','From $150'],['air','Aeration &amp; overseed','Core aeration and seed to fix thin or patchy areas.','From $95']];
+const g=document.getElementById('svcGrid');
+SERV.forEach(([k,n,d,p])=>{const el=document.createElement('div');el.className='svc reveal';el.innerHTML=`<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg></div><h3>${n}</h3><p>${d}</p><p class="from">${p}</p>`;g.appendChild(el)});
+
+/* quote estimator (invented sample rates) */
+const FREQ=[['weekly','Weekly',4.33,1],['biweekly','Every 2 weeks',2.17,1.15],['once','One-time',1,1.3]];
+const ADD=[['fert','Fertilize &amp; weeds',s=>45+0.006*s],['leaf','Leaf cleanup',s=>80+0.012*s],['hedge','Hedge trimming',()=>65],['mulch','Mulch &amp; beds',()=>150],['air','Aeration &amp; overseed',s=>60+0.01*s]];
+const st={f:0,add:new Set()};
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+const range=(n)=>money(n*0.92)+' – '+money(n*1.08);
+function chips(id,items,active,click,isOn){const box=$(id);box.innerHTML='';items.forEach((it,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.innerHTML=it[1];b.setAttribute('aria-pressed',isOn(it,i));b.onclick=()=>{click(it,i);calc()};box.appendChild(b)})}
+function calc(){const s=+$('sq').value;$('sqOut').textContent=s.toLocaleString('en-US')+' sq ft';
+ chips('cFreq',FREQ,0,(it,i)=>{st.f=i},(it,i)=>st.f===i);
+ chips('cAdd',ADD,0,(it)=>{st.add.has(it[0])?st.add.delete(it[0]):st.add.add(it[0])},(it)=>st.add.has(it[0]));
+ const [fk,fn,visits,mult]=FREQ[st.f];
+ const mow=(30+0.0035*s)*mult;
+ let extras=0;ADD.forEach(a=>{if(st.add.has(a[0]))extras+=a[2](s)});
+ const perVisit=mow;
+ let html='';
+ if(fk==='once'){html=`<span>Your one-time estimate</span><span class="big">${range(mow+extras)}</span><div class="row2"><span>Mowing &amp; edging</span><b>${range(mow)}</b></div>${extras?`<div class="row2"><span>Add-ons</span><b>${range(extras)}</b></div>`:''}`}
+ else{html=`<span>Each mowing visit</span><span class="big">${range(perVisit)}</span><div class="row2"><span>Monthly mowing (about ${visits===4.33?'4':'2'} visits)</span><b>${range(perVisit*visits)}</b></div>${extras?`<div class="row2"><span>One-time add-ons</span><b>${range(extras)}</b></div>`:''}`}
+ $('est').innerHTML=html}
+$('sq').addEventListener('input',calc);calc();
+
+/* before / after */
+const box=$('baBox'),rng=$('baRange');
+function setP(){box.style.setProperty('--p',rng.value+'%')}
+rng.addEventListener('input',setP);setP();
+
+/* service area */
+const ZIPS={'00101':1,'00102':2,'00103':3,'00104':4,'00105':0};
+const NAMES=['Mon','Tue','Wed','Thu','Fri'],LONG=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+const wk=$('week');NAMES.forEach((n,i)=>{const d=document.createElement('div');d.className='day';d.innerHTML=`${n}<small>${['North','East','Central','South','West'][i]}</small>`;wk.appendChild(d)});
+function show(i){[...wk.children].forEach((c,k)=>c.classList.toggle('on',k===i))}
+$('zipForm').addEventListener('submit',e=>{e.preventDefault();const z=$('zip').value.trim();const r=$('zipRes');
+ if(!/^\d{5}$/.test(z)){r.textContent='Please enter a 5-digit ZIP code.';show(-1);return}
+ if(z in ZIPS){const i=ZIPS[z];r.innerHTML=`Good news: we serve <b>${z}</b>. Your crew comes on <b>${LONG[i]}s</b> (demo route).`;show(i)}
+ else{r.textContent=`We don't cover ${z} yet in this demo. Try 00101 to 00105.`;show(-1)}});
+
+/* animation */
+if(!reduce){
+ document.querySelectorAll('.reveal').forEach(el=>gsap.to(el,{opacity:1,y:0,duration:.85,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}}));
+ gsap.timeline({defaults:{ease:'expo.out'}}).to('.hero h1 .w',{y:0,duration:1.1,stagger:.13,delay:.15}).from('.hero .eyebrow,.hero .lead,.hero .row',{opacity:0,y:22,duration:.8,stagger:.08},'-=.7');
+}
+</script>
+</body>
+</html>
