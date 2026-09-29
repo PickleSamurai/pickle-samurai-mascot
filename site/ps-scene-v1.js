@@ -5,7 +5,7 @@
   if(window.__psScene) return;
   if(!/^\/?$/.test(location.pathname)) return;
   window.__psScene=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@4fdc6c680ce3963d1e3ebb3fd6fafcc898a64af3/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b501bde5e20ea14fc1e00999837c35d607edace0/assets/site/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
   var SCENES=[
