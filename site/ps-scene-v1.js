@@ -68,7 +68,7 @@
     for(var i=1;i<layers.length;i++){
       var sc=secs[i]; if(!sc) continue;
       var top=sc.getBoundingClientRect().top;
-      var t=Math.min(1,Math.max(0,(vh*.95-top)/(vh*.8)));
+      var t=Math.min(1,Math.max(0,(vh*.95-top)/(vh*(innerWidth<820?.42:.5))));
       var e=-5+ease(t)*135;
       layers[i].el.style.clipPath=t<=0?'polygon(0 0,-5% 0,-30% 100%,0 100%)':(t>=1?'none':'polygon(0 0,'+e.toFixed(2)+'% 0,'+(e-25).toFixed(2)+'% 100%,0 100%)');
       if(t>0&&t<1){active=i;at=e;}

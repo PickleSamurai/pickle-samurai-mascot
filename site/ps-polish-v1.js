@@ -2,7 +2,7 @@
    Loaded from Webflow Site settings > Custom code > Footer. Everything is injected, so no page embed needs editing. */
 (function(){
   if(window.__psPolish) return; window.__psPolish=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@9e6fb72807f6d0fb309c14651149c286712a6993/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b0da301ee4b3d759632b2247297e1765588701b6/assets/site/';
   var IG='https://www.instagram.com/thepicklesamurai/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var isHome=/^\/?$/.test(location.pathname);
@@ -28,6 +28,11 @@
    '.card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(360px circle at var(--mx) var(--my),rgba(233,184,114,.13),transparent 60%)}',
    '.card:hover::before{opacity:1}',
    '.card>*{position:relative;z-index:1}',
+   '.ps-menu li a{align-items:center!important;gap:16px!important}',
+   '.ps-menu li a::before{flex:0 0 30px;width:30px;text-align:left;font-variant-numeric:tabular-nums;font-size:13px!important;font-weight:600;transform:translateY(-.06em)}',
+   '.ps-menu .slash{top:9%!important}',
+   '.viewport img.ps-shot,.phone .pv img.ps-shot{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}',
+   '@media(hover:none),(max-width:900px){.phone{animation:none!important}.browser{transform:none!important;will-change:auto!important}}',
    /* button sheen */
    '.btn{position:relative;overflow:hidden}',
    '.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);transform:translateX(-130%);pointer-events:none}',
@@ -115,6 +120,24 @@
     c.style.overflow='hidden';
   }
 
+
+  /* Work page: live iframes of the concept sites are heavy on phones; use screenshots there */
+  function swapFrames(){
+    if(!/^\/work\/?$/.test(location.pathname)) return;
+    if(!matchMedia('(hover:none),(max-width:900px)').matches) return;
+    document.querySelectorAll('.stage').forEach(function(st){
+      var t=st.querySelector('.try'); if(t) t.remove();
+      st.querySelectorAll('iframe').forEach(function(f){
+        var u=f.getAttribute('data-src')||f.getAttribute('src')||'';
+        var k=/ember/.test(u)?'ember':/sharpline/.test(u)?'sharpline':/lawncare/.test(u)?'fresh':null; if(!k) return;
+        var phone=!!f.closest('.phone'), im=document.createElement('img');
+        im.className='ps-shot'; im.src=ASSET+'work-'+k+'-'+(phone?'m':'d')+'.jpg'; im.width=phone?390:1280; im.height=phone?844:800; im.decoding='async'; im.loading='lazy';
+        var lab=f.getAttribute('title'); im.alt=lab?lab.replace(', live preview','')+' (screenshot)':'';
+        f.parentNode.replaceChild(im,f);
+      });
+    });
+  }
+
   /* ---------- reveal-on-view + parallax + card tilt ---------- */
   var obs=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.25}):null;
   function io(el){ if(!el) return; if(obs) obs.observe(el); else el.classList.add('in'); }
@@ -146,7 +169,7 @@
         try{ if(window.ScrollTrigger) ScrollTrigger.refresh(); }catch(e){}
         try{ dispatchEvent(new Event('resize')); }catch(e){}
       }
-    } else { addThumbs(); }
+    } else { addThumbs(); swapFrames(); }
   }
   (function(){var x=document.createElement('script');x.src='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@94d332c7b162763abfca9b0afa17b2be931135a5/site/ps-scene-v1.js';x.defer=true;document.head.appendChild(x)})();
   tilt();
