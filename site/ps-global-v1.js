@@ -67,5 +67,21 @@
       b.style.position='relative'; nav.style.zIndex='95';
     }
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+  // <div data-ps-include="URL"></div> -> fetches that HTML fragment (nav + page + footer) and drops it in place.
+  // Keeps Webflow embeds tiny: the real page lives in GitHub and updates with one commit.
+  function includes(done){
+    var nodes=[].slice.call(document.querySelectorAll('[data-ps-include]'));
+    if(!nodes.length){done();return}
+    var left=nodes.length;
+    nodes.forEach(function(n){
+      fetch(n.getAttribute('data-ps-include')).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(html){
+        var t=document.createElement('template'); t.innerHTML=html;
+        [].forEach.call(t.content.querySelectorAll('script'),function(old){var s=document.createElement('script');[].forEach.call(old.attributes,function(a){s.setAttribute(a.name,a.value)});s.textContent=old.textContent;old.replaceWith(s)});
+        n.replaceWith(t.content);
+      }).catch(function(){n.innerHTML='<p style="padding:40px 20px">This page did not load. Please refresh, or email support@picklesamurai.com.</p>'})
+      .then(function(){if(--left===0)done()});
+    });
+  }
+  function start(){includes(function(){run();document.dispatchEvent(new Event('ps:included'))})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

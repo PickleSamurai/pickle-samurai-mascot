@@ -34,6 +34,10 @@ document.addEventListener('click',e=>{
   if(lenis) lenis.scrollTo(el,{offset:0}); else el.scrollIntoView({behavior:reduce?'auto':'smooth'});
 });
 
+/* ---------- small DOM additions (works with the existing home embed) ---------- */
+if(!document.querySelector('.taphint')){const th=document.createElement('div');th.className='taphint';th.setAttribute('aria-hidden','true');th.textContent='Tap the samurai';document.getElementById('stage').after(th)}
+{const row=document.querySelector('.cta .row2'); if(row&&!row.querySelector('a[href="/checkout"]')){const a=document.createElement('a');a.className='btn ghost';a.href='/checkout';a.innerHTML='See packages &amp; pricing';const mail=row.querySelector('.mail');row.insertBefore(a,mail)}}
+
 /* ---------- 3D stage ---------- */
 const stage=document.getElementById('stage');
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});

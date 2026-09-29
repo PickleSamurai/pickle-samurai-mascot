@@ -6,7 +6,9 @@
    1) Prices below are what the page SHOWS. They must match the prices you set in Stripe.
    2) Paste each Stripe Payment Link (https://buy.stripe.com/...) into STRIPE_LINKS.
       Leave a link as '' and the page will offer "Book a call" instead of Pay for that combo. */
-(function(){
+(function boot(){
+if(!document.getElementById('ps-checkout')){document.addEventListener('ps:included',boot,{once:true});return}
+if(window.__psCheckout)return; window.__psCheckout=true;
 var CONFIG={
   currency:'USD',
   careStartsAfterDays:30,        // set the same number as "free trial days" on each Stripe link
