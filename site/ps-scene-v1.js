@@ -25,7 +25,7 @@
    '#ps-scene .ps-edge{filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 18px currentColor);opacity:0}',
    '#ps-scene canvas{position:absolute;inset:0;width:100%;height:100%}',
    '@media(max-width:820px){#ps-scene .ps-l img{filter:brightness(.7) saturate(1.05)}}',
-   '@media (max-width:820px), (max-width:1180px) and (orientation:portrait){#stage{background:transparent!important}#stage::after{display:none!important}.disc{background:rgba(14,14,18,.6)!important}}',
+   '@media (max-width:820px), (max-width:1180px) and (orientation:portrait){#stage{background:rgba(14,14,18,.5)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}.disc{background:rgba(14,14,18,.6)!important}}',
    '@media(prefers-reduced-motion:reduce){#ps-scene .ps-edge{display:none}}'
   ].join('\n');
   var st=document.createElement('style'); st.setAttribute('data-ps-scene',''); st.textContent=css; document.head.appendChild(st);
