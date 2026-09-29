@@ -140,7 +140,7 @@
     addIG();
     if(isHome){
       var before=document.documentElement.scrollHeight;
-      addFigs(); addThumbs(); addProcess(); addBanner(); watchFigs(); par();
+      addFigs(); addThumbs(); addProcess(); watchFigs(); par();
       if(document.documentElement.scrollHeight!==before){
         try{ if(window.ScrollTrigger) ScrollTrigger.refresh(); }catch(e){}
         try{ dispatchEvent(new Event('resize')); }catch(e){}

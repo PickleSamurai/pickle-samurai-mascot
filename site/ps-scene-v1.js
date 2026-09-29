@@ -18,13 +18,13 @@
   var css=[
    '#ps-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#0E0E12}',
    '#ps-scene .ps-l{position:absolute;inset:0;overflow:hidden;will-change:clip-path}',
-   '#ps-scene .ps-l img{position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;display:block;filter:brightness(.62) saturate(1.08);will-change:transform;transform-origin:50% 55%}',
-   '#ps-scene .ps-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,rgba(14,14,18,.05) 0%,rgba(14,14,18,.55) 70%,rgba(14,14,18,.92) 100%),linear-gradient(180deg,rgba(14,14,18,.55),rgba(14,14,18,0) 22%,rgba(14,14,18,0) 70%,rgba(14,14,18,.6))}',
+   '#ps-scene .ps-l img{position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05);will-change:transform;transform-origin:50% 55%}',
+   '#ps-scene .ps-vig{position:absolute;inset:0;background:radial-gradient(120% 95% at 55% 45%,rgba(14,14,18,0) 0%,rgba(14,14,18,.35) 70%,rgba(14,14,18,.8) 100%),linear-gradient(90deg,rgba(14,14,18,.5),rgba(14,14,18,.12) 60%,rgba(14,14,18,.2)),linear-gradient(180deg,rgba(14,14,18,.5),rgba(14,14,18,0) 20%,rgba(14,14,18,0) 75%,rgba(14,14,18,.55))}',
    '#ps-scene .ps-edge{position:absolute;inset:0;width:100%;height:100%;overflow:visible}',
    '#ps-scene .ps-edge line{stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round}',
    '#ps-scene .ps-edge{filter:drop-shadow(0 0 7px currentColor) drop-shadow(0 0 18px currentColor);opacity:0}',
    '#ps-scene canvas{position:absolute;inset:0;width:100%;height:100%}',
-   '@media(max-width:820px){#ps-scene .ps-l img{filter:brightness(.55) saturate(1.05)}}',
+   '@media(max-width:820px){#ps-scene .ps-l img{filter:brightness(.7) saturate(1.05)}}',
    '@media(prefers-reduced-motion:reduce){#ps-scene .ps-edge{display:none}}'
   ].join('\n');
   var st=document.createElement('style'); st.setAttribute('data-ps-scene',''); st.textContent=css; document.head.appendChild(st);
