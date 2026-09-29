@@ -156,6 +156,15 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:var(--flame)}
 .reveal{opacity:0;transform:translateY(36px)}
 html,body{overflow-x:clip}
 *{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+.heroimg{margin:0;position:relative}
+.heroimg img,.ph img{width:100%;height:auto;display:block;object-fit:cover;border-radius:22px}
+.heroimg img{aspect-ratio:3/2;box-shadow:0 30px 70px -20px rgba(0,0,0,.75),0 0 0 1px rgba(255,244,227,.12);animation:kb 18s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.04)}}
+.heroimg img{clip-path:inset(0 round 22px)}
+.heroimg figcaption,.ph figcaption{font-size:12px;line-height:1.4;color:var(--muted);margin-top:8px}
+.ph{margin:0 0 26px}.ph img{aspect-ratio:16/9;max-height:400px;border-radius:18px}
+#menu .ph figcaption,#story .ph figcaption{color:#6a5646}
+@media(prefers-reduced-motion:reduce){.heroimg img{animation:none}}
 </style>
 </head>
 <body>
@@ -212,12 +221,7 @@ html,body{overflow-x:clip}
     <p class="lead">Slow-smoked brisket, birria tacos and charred street corn, served from a truck that shows up where the hungry are. Follow the smoke.</p>
     <div class="row"><a class="btn" href="#menu">See the menu</a><a class="btn ghost" href="#find">Where we're parked</a></div>
   </div>
-  <svg class="heroart" viewBox="0 0 360 230" role="img" aria-label="Illustration of the Ember and Wheel food truck">
-    <g class="steam"><circle cx="229" cy="22" r="9" fill="#FFF4E3" opacity=".7"/></g>
-    <g class="steam s2"><circle cx="232" cy="22" r="7" fill="#FFF4E3" opacity=".7"/></g>
-    <g class="steam s3"><circle cx="226" cy="22" r="8" fill="#FFF4E3" opacity=".7"/></g>
-    <g transform="translate(0,20)"><use href="#truck"/><g transform="translate(98 158)"><use href="#wheel" class="hw"/></g><g transform="translate(286 158)"><use href="#wheel" class="hw"/></g></g>
-  </svg>
+  <figure class="heroart heroimg"><img src="../../assets/ember-wheel/hero.jpg" width="1536" height="1024" alt="A black food truck with string lights parked at sunset with smoke rising from the grill" fetchpriority="high"><figcaption>Sample image: AI-generated illustration for this fictional concept.</figcaption></figure>
 </section>
 
 <div class="mqwrap" aria-hidden="true"><div class="marquee"><div>
@@ -229,6 +233,7 @@ html,body{overflow-x:clip}
   <div class="wrap">
     <h2 class="reveal">The Menu</h2>
     <p class="sub reveal">Everything is smoked over oak and finished to order. Tap a category, add to your order and see the total update. <strong>(Demo only: nothing is charged or sent.)</strong></p>
+    <figure class="ph reveal"><img src="../../assets/ember-wheel/food.jpg" width="1536" height="1024" loading="lazy" alt="Smoked brisket, burnt-end fries, birria tacos and charred corn on a wooden table"><figcaption>Sample image: AI-generated illustration for this fictional concept.</figcaption></figure>
     <div class="tabs reveal" role="group" aria-label="Menu categories" id="tabs"></div>
     <div class="grid" id="grid" aria-live="polite"></div>
     <p class="notice">Allergen note (sample): dishes may contain wheat, dairy, soy and tree nuts. Ask before ordering.</p>
@@ -249,6 +254,7 @@ html,body{overflow-x:clip}
       <h2 class="reveal">Two cooks.<br>One truck.</h2>
       <p class="reveal">Ember &amp; Wheel started with a borrowed smoker and a simple idea: make the food you'd stop your car for. (Fictional story written for this concept.)</p>
       <p class="reveal">We cater birthdays, brewery nights and office lunches with a set menu and a clear price per guest.</p>
+      <figure class="ph reveal"><img src="../../assets/ember-wheel/catering.jpg" width="1536" height="1024" loading="lazy" alt="Evening catering setup with long tables, string lights and trays of food"><figcaption>Sample image: AI-generated illustration for this fictional concept.</figcaption></figure>
       <div class="stats reveal"><div><b>4</b><span>Smoked meats</span></div><div><b>12</b><span>Menu items</span></div><div><b>5</b><span>Days a week</span></div></div>
     </div>
     <form id="cater" class="reveal" novalidate>
