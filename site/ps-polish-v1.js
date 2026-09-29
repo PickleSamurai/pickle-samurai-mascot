@@ -13,7 +13,7 @@
   var css=[
    '.ic-ig{-webkit-mask-image:'+igUrl+';mask-image:'+igUrl+'}',
    /* section images */
-   '.ps-fig{position:relative;margin:0 0 26px;aspect-ratio:2/1;overflow:hidden;background:#17171D;border-top:1px solid rgba(233,184,114,.4);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}',
+   '.ps-fig{position:relative;margin:0 0 26px;aspect-ratio:2.2/1;overflow:hidden;background:#17171D;border-top:1px solid rgba(233,184,114,.4);clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%)}',
    '.ps-fig img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;display:block;will-change:transform;animation:psKen 22s ease-in-out infinite alternate}',
    '.ps-fig::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 45%,rgba(14,14,18,.75)),radial-gradient(120% 90% at 100% 0,color-mix(in srgb,var(--fa,#C0392B) 32%,transparent),transparent 60%);pointer-events:none}',
    '.ps-fig::after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.16) 50%,transparent 65%);transform:translateX(-130%);pointer-events:none}',
