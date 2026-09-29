@@ -5,12 +5,12 @@
   if(window.__psScene) return;
   if(!/^\/?$/.test(location.pathname)) return;
   window.__psScene=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@9153c424e904757c7fc341e929dabf09cf749ec9/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@4fdc6c680ce3963d1e3ebb3fd6fafcc898a64af3/assets/site/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
   var SCENES=[
     {img:'bg-hero.jpg',vid:'bg-hero-loop.mp4',sel:null,c:'#C0392B',alt:'Misty mountain valley at dawn with a torii gate and a crimson sun'},
-    {img:'bg-design.jpg',sel:'#design',c:'#C0392B',alt:'Rain-soaked alley at night lit by red neon'},
+    {img:'bg-design.jpg',vid:'bg-design-loop.mp4',lazyvid:1,sel:'#design',c:'#C0392B',alt:'Rain-soaked alley at night lit by red neon'},
     {img:'bg-security.jpg',sel:'#security',c:'#7B3FE4',alt:'Dark server corridor lit by violet light'},
     {img:'bg-web3.jpg',sel:'#web3',c:'#9DC63B',alt:'Crystal cavern glowing green'},
     {img:'bg-work.jpg',sel:'#work',c:'#E9B872',alt:'Japanese dojo at night'}
@@ -51,7 +51,7 @@
   document.body.insertBefore(root,document.body.firstChild);
 
   /* lazy-load the later scenes once the page is idle */
-  function loadVideos(){ layers.forEach(function(L){ if(L.vd&&!L.vd.src){ L.vd.src=ASSET+L.s.vid; var pr=L.vd.play(); if(pr&&pr.catch) pr.catch(function(){}); } }); }
+  function loadVideos(){ layers.forEach(function(L){ if(L.vd&&!L.vd.src&&!L.s.lazyvid){ L.vd.src=ASSET+L.s.vid; var pr=L.vd.play(); if(pr&&pr.catch) pr.catch(function(){}); } }); }
   function loadRest(){ layers.forEach(function(L){var d=L.im.getAttribute('data-src'); if(d){L.im.src=d;L.im.removeAttribute('data-src')}}); }
   function afterLoad(){ setTimeout(loadVideos,300); setTimeout(loadRest,1200); }
   if(document.readyState==='complete') afterLoad(); else addEventListener('load',afterLoad);
@@ -72,6 +72,7 @@
       var e=-5+ease(t)*135;
       layers[i].el.style.clipPath=t<=0?'polygon(0 0,-5% 0,-30% 100%,0 100%)':(t>=1?'none':'polygon(0 0,'+e.toFixed(2)+'% 0,'+(e-25).toFixed(2)+'% 100%,0 100%)');
       if(t>0&&t<1){active=i;at=e;}
+      var Lz=layers[i]; if(t>0&&Lz.vd&&!Lz.vd.src&&Lz.s.lazyvid&&innerWidth>=820){ Lz.vd.src=ASSET+Lz.s.vid; var pr=Lz.vd.play(); if(pr&&pr.catch) pr.catch(function(){}); }
     }
     if(active>0){
       line.setAttribute('x1',at.toFixed(2)); line.setAttribute('y1',0); line.setAttribute('x2',(at-25).toFixed(2)); line.setAttribute('y2',100);
