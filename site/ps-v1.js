@@ -4,7 +4,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 
-const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@main/pickle-samurai-idle-web-hq.glb?v=2';
+const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@20656dd9c19a84d085ac2c880c5e7fe856930a95/pickle-samurai-idle-web-hq.glb';
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 gsap.registerPlugin(ScrollTrigger);
