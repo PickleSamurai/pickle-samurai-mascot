@@ -4,7 +4,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 
-const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@main/pickle-samurai-idle-web-v4.glb';
+const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@main/pickle-samurai-idle-web-hq.glb?v=2';
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 gsap.registerPlugin(ScrollTrigger);
@@ -25,15 +25,16 @@ const stage=document.getElementById('stage');
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=.86;
 stage.appendChild(renderer.domElement);
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(30,1,.1,50);
 camera.position.set(0,1.0,4.7);
-const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=0.7;
-const key=new THREE.DirectionalLight(0xffffff,1.9); key.position.set(3,4,4); scene.add(key);
-const rim=new THREE.DirectionalLight(0xC0392B,3.2); rim.position.set(-4,2,-3); scene.add(rim);
-scene.add(new THREE.HemisphereLight(0xffffff,0x221a2b,0.35));
+const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=.5;
+const key=new THREE.DirectionalLight(0xffe1c7,1.3); key.position.set(3,4,4); scene.add(key);
+const fill=new THREE.DirectionalLight(0x7892c8,.48); fill.position.set(-3,1,4); scene.add(fill);
+const rim=new THREE.DirectionalLight(0x8f3651,1.45); rim.position.set(-4,2,-3); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xb8c3d8,0x160e1b,.2));
 
 const rig=new THREE.Group(); scene.add(rig);
 let mixer=null, headBone=null, neckBone=null, mascot=null;
@@ -57,7 +58,7 @@ loader.load(GLB,gltf=>{
   const box=new THREE.Box3().setFromObject(mascot); const c=box.getCenter(new THREE.Vector3()); rig.position.y=py0;
   mascot.position.set(-c.x,-box.min.y,-c.z);
   mascot.traverse(o=>{ if(o.isBone||o.type==='Bone'){ if(/Head$/.test(o.name)&&!/Top/.test(o.name))headBone=o; if(/Neck$/.test(o.name))neckBone=o; }
-    if(o.isMesh){o.frustumCulled=false; const m=o.material; ['map','normalMap','roughnessMap','metalnessMap'].forEach(k=>{if(m&&m[k]){m[k].anisotropy=renderer.capabilities.getMaxAnisotropy();m[k].needsUpdate=true}}); if(m){m.envMapIntensity=1;}} });
+    if(o.isMesh){o.frustumCulled=false; const m=o.material; ['map','normalMap','roughnessMap','metalnessMap'].forEach(k=>{if(m&&m[k]){m[k].anisotropy=renderer.capabilities.getMaxAnisotropy();m[k].needsUpdate=true}}); if(m){m.envMapIntensity=.58;if(m.normalScale)m.normalScale.set(.92,.92);}} });
   if(gltf.animations.length){mixer=new THREE.AnimationMixer(mascot); mixer.clipAction(gltf.animations[0]).play();}
   rig.position.x=rig.userData.baseX;
   rig.userData.reveal=0;
