@@ -33,6 +33,16 @@
    '.ps-menu .slash{top:9%!important}',
    '.viewport img.ps-shot,.phone .pv img.ps-shot{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}',
    '@media(hover:none),(max-width:900px){.phone{animation:none!important}.browser{transform:none!important;will-change:auto!important}}',
+   /* readability: nothing under 13px except the compact nav button */
+   'main .btn,.card small,.card em,.case-copy small,.kicker,.fx-kicker,.bar span,.taphint,.ps-fig figcaption,.ps-price,.fx-card small,.fx-time,.fx-pick,.fx-price i,.fx-tot span,.fx-sum li span{font-size:13px!important}',
+   '.fx-pop{font-size:12px!important}',
+   '.tag{font-size:13px}',
+   /* nav: keep logo and button apart on phones */
+   '@media(max-width:430px){nav[aria-label="Main"]{column-gap:10px!important}nav .logo,.logo{font-size:23px!important}nav .btn{padding:11px 14px!important}}',
+   /* footer links: even gaps when they wrap */
+   'footer .legal{gap:6px 22px!important}',
+   /* services packages table: readable cards on phones */
+   '@media(max-width:700px){.tablewrap:has(thead th:nth-child(5)){overflow:visible}.tablewrap:has(thead th:nth-child(5)) table,.tablewrap:has(thead th:nth-child(5)) tbody{display:block}.tablewrap:has(thead th:nth-child(5)) thead{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}.tablewrap:has(thead th:nth-child(5)) tr{display:block;padding:20px 18px;margin:0 0 14px;background:#17171D;border-top:1px solid rgba(233,184,114,.35)}.tablewrap:has(thead th:nth-child(5)) th,.tablewrap:has(thead th:nth-child(5)) td{display:block;padding:0;border:0;line-height:1.65}.tablewrap:has(thead th:nth-child(5)) th[scope=row]{font-size:13px;letter-spacing:.16em;color:#E9B872;margin-bottom:4px}.tablewrap:has(thead th:nth-child(5)) td:nth-of-type(1){font-size:19px;font-weight:600;color:#F3F1EC}.tablewrap:has(thead th:nth-child(5)) td:nth-of-type(2){margin:8px 0 14px;font-size:16px;color:#D8D6DC}.tablewrap:has(thead th:nth-child(5)) td:nth-of-type(3){display:inline-block;font-family:"Bebas Neue",Impact,sans-serif;font-size:38px;line-height:1;color:#F3F1EC;margin-right:14px}.tablewrap:has(thead th:nth-child(5)) td:nth-of-type(4){display:inline-block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9DC63B}}',
    /* button sheen */
    '.btn{position:relative;overflow:hidden}',
    '.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);transform:translateX(-130%);pointer-events:none}',
