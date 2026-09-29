@@ -9,8 +9,8 @@
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
   var SCENES=[
-    {img:'bg-hero.jpg',vid:'bg-hero-loop.mp4',sel:null,c:'#C0392B',alt:'Misty mountain valley at dawn with a torii gate and a crimson sun'},
-    {img:'bg-design.jpg',vid:'bg-design-loop.mp4',lazyvid:1,sel:'#design',c:'#C0392B',alt:'Rain-soaked alley at night lit by red neon'},
+    {img:'bg-hero.jpg',sel:null,c:'#C0392B',alt:'Misty mountain valley at dawn with a torii gate and a crimson sun'},
+    {img:'bg-design.jpg',sel:'#design',c:'#C0392B',alt:'Rain-soaked alley at night lit by red neon'},
     {img:'bg-security.jpg',sel:'#security',c:'#7B3FE4',alt:'Dark server corridor lit by violet light'},
     {img:'bg-web3.jpg',sel:'#web3',c:'#9DC63B',alt:'Crystal cavern glowing green'},
     {img:'bg-work.jpg',sel:'#work',c:'#E9B872',alt:'Japanese dojo at night'}
