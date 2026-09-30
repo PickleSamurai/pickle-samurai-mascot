@@ -112,15 +112,21 @@
     },{passive:true});
   }
 
+  /* below-the-fold sections (images, process band) are inserted on first interaction or once the page is idle,
+     so first load does no layout work for content nobody can see yet */
+  var extrasOn=false;
+  function armExtras(){ if(extrasOn) return; extrasOn=true; run(); }
+  if(isHome){
+    ['pointerdown','keydown','wheel','touchstart','scroll'].forEach(function(e){ addEventListener(e,armExtras,{once:true,passive:true}); });
+    var idleGo=function(){ setTimeout(function(){ (window.requestIdleCallback||setTimeout)(armExtras,{timeout:2000}); },3000); };
+    if(document.readyState==='complete') idleGo(); else addEventListener('load',idleGo);
+  }
   function run(){
     addIG();
     if(isHome){
-      var before=document.documentElement.scrollHeight;
-      addFigs(); addThumbs(); addProcess(); watchFigs(); par();
-      if(document.documentElement.scrollHeight!==before){
-        try{ if(window.ScrollTrigger) ScrollTrigger.refresh(); }catch(e){}
-        try{ dispatchEvent(new Event('resize')); }catch(e){}
-      }
+      if(extrasOn){ addFigs(); addThumbs(); addProcess(); watchFigs(); }
+      // one scroll-trigger refresh after the new sections exist (no forced layout reads here)
+      if(!window.__psRef && document.querySelector('.ps-proc')){ window.__psRef=1; requestAnimationFrame(function(){ try{ if(window.ScrollTrigger) ScrollTrigger.refresh(); }catch(e){} }); }
     } else { addThumbs(); swapFrames(); }
   }
   tilt();
@@ -254,7 +260,7 @@
     requestAnimationFrame(tick);
   }
   document.addEventListener('visibilitychange',function(){vis=!document.hidden});
-  findSecs(); frame();
+  findSecs(); requestAnimationFrame(frame);
   /* embers start a moment later so scene set-up never piles onto the first-paint work */
   setTimeout(function(){ fit(); for(var q=0;q<N;q++) ps.push(mk(true)); if(!reduce) requestAnimationFrame(tick); },1500);
   /* sections are created late by some embeds; re-find a few times */
