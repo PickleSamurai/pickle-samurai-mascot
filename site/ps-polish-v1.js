@@ -180,7 +180,7 @@
     l.appendChild(im);
     var vd=null;
     if(s.vid&&!reduce&&!(navigator.connection&&navigator.connection.saveData)){ vd=document.createElement('video'); vd.muted=true; vd.defaultMuted=true; vd.loop=true; vd.playsInline=true; vd.setAttribute('playsinline',''); vd.setAttribute('muted',''); vd.preload='auto'; vd.setAttribute('aria-hidden','true'); vd.tabIndex=-1; vd.addEventListener('playing',function(){vd.classList.add('on')}); l.appendChild(vd); }
-    if(i>0) l.style.clipPath='polygon(0 0,-5% 0,-30% 100%,0 100%)';
+    if(i>0){ if(small){ l.style.opacity=0; l.style.visibility='hidden'; } else l.style.clipPath='polygon(0 0,-5% 0,-30% 100%,0 100%)'; }
     root.appendChild(l); return {el:l,im:im,vd:vd,s:s};
   });
   var vig=document.createElement('div'); vig.className='ps-vig'; root.appendChild(vig);
@@ -213,6 +213,7 @@
       var sc=secs[i]; if(!sc) continue;
       var top=sc.getBoundingClientRect().top; if(top<vh*2.6) loadScene(layers[i]);
       var t=Math.min(1,Math.max(0,(vh*.95-top)/(vh*(innerWidth<820?.42:.5))));
+      if(small){ layers[i].el.style.clipPath='none'; layers[i].el.style.opacity=t<=0?0:(t>=1?1:ease(t)); layers[i].el.style.visibility=t<=0?'hidden':'visible'; if(t>0&&t<1){active=i;at=0} continue; }
       var e=-5+ease(t)*135;
       layers[i].el.style.clipPath=t<=0?'polygon(0 0,-5% 0,-30% 100%,0 100%)':(t>=1?'none':'polygon(0 0,'+e.toFixed(2)+'% 0,'+(e-25).toFixed(2)+'% 100%,0 100%)');
       if(t>0&&t<1){active=i;at=e;}
@@ -224,6 +225,7 @@
       var col=layers[active].s.c; line.setAttribute('stroke',col); svg.style.color=col;
     } else svg.style.opacity=0;
     var k=reduce?0:1;
+    if(small){ if(!frame._static){ frame._static=1; layers.forEach(function(L){ L.im.style.transform='scale(1.04)'; }); } return; }
     layers.forEach(function(L,i){
       var s=1.04+k*(.16*P+.03*Math.sin(P*6.28+i)), px=-mx*16*k, py=-my*10*k-P*k*30*(i%2?1:-1);
       var tf='translate3d('+px.toFixed(1)+'px,'+py.toFixed(1)+'px,0) scale('+s.toFixed(3)+')';
@@ -262,7 +264,7 @@
   document.addEventListener('visibilitychange',function(){vis=!document.hidden});
   findSecs(); requestAnimationFrame(frame);
   /* embers start a moment later so scene set-up never piles onto the first-paint work */
-  setTimeout(function(){ fit(); for(var q=0;q<N;q++) ps.push(mk(true)); if(!reduce) requestAnimationFrame(tick); },1500);
+  setTimeout(function(){ fit(); for(var q=0;q<N;q++) ps.push(mk(true)); if(!reduce&&!small) requestAnimationFrame(tick); },1500);
   /* sections are created late by some embeds; re-find a few times */
   var n=0,t=setInterval(function(){findSecs();req();if(++n>20)clearInterval(t)},500);
 })();

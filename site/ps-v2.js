@@ -146,6 +146,15 @@ if(fine&&!reduce){
   });
 }
 
+/* ---------- scroll robustness: triggers stay in sync when the page height changes, and revealed text can never stay hidden ---------- */
+{
+  let lastH=0, t=0;
+  new ResizeObserver(()=>{ const h=document.documentElement.scrollHeight; if(Math.abs(h-lastH)>4){ lastH=h; clearTimeout(t); t=setTimeout(()=>ScrollTrigger.refresh(),150); } }).observe(document.body);
+  addEventListener('load',()=>setTimeout(()=>ScrollTrigger.refresh(),400));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&parseFloat(getComputedStyle(e.target).opacity)<.05) gsap.to(e.target,{opacity:1,y:0,duration:.6,overwrite:'auto'}); }),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+
 /* ---------- lazy 3D mascot: import on first interaction, or shortly after load ---------- */
 let booted=false;
 function bootMascot(){
