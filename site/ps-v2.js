@@ -48,7 +48,7 @@ if(PHONE&&stage){ // phones/tablets: still picture first, live 3D later (keeps f
     const r=stage.getBoundingClientRect(), W=r.width, H=r.height; if(!W||!H) return;
     const st=stacked(), z=st?4.6:4.7, camY=st?.15:1, feetY=st?-.8:0, t15=Math.tan(Math.PI/12);
     const px=H/(2*t15*z), xF=Math.min(1,(t15*z*(W/H))/2.1), k=4.7/z;
-    const cx=W/2+(st?0:.9*xF)*px, feet=H/2+(camY-feetY)*px;
+    const cx=W/2+(st?0:.9*xF)*px+(st?.017*H:0), feet=H/2+(camY-feetY)*px+(st?.005*H:0); // measured offset vs the live render on phones
     poster.style.left=(cx+PG.dx0*H*k)+'px'; poster.style.top=(feet+PG.dy0*H*k)+'px';
     poster.style.width=((PG.dx1-PG.dx0)*H*k)+'px'; poster.style.height=((PG.dy1-PG.dy0)*H*k)+'px';
   };
