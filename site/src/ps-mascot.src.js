@@ -12,7 +12,7 @@ const stacked=()=>S.stacked();
 const reduce=S.reduce, fine=S.fine;
 const GLB=window.__psGLB||new URL('../pickle-samurai-idle-web-hq-v3.glb',import.meta.url).href;
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,stacked()?1.75:2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,stacked()?1.5:2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=.86;
 stage.appendChild(renderer.domElement);
@@ -66,8 +66,9 @@ loader.load(GLB,gltf=>{
   if(gltf.animations.length){mixer=new THREE.AnimationMixer(mascot); mixer.clipAction(gltf.animations[0]).play();}
   rig.position.x=rig.userData.baseX;
   rig.userData.reveal=0;
-  window.__mascotReady=true; document.documentElement.classList.add('mascot-on'); revealMascot();
-  setTimeout(()=>document.querySelector('.ps-poster')?.remove(),900);
+  window.__mascotReady=true; revealMascot();
+  // swap only after the canvas has drawn a frame, all at once (no overlap, no flicker)
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.documentElement.classList.add('mascot-on'); document.querySelector('.ps-poster')?.remove(); }));
 },undefined,err=>console.warn('mascot failed',err));
 
 function revealMascot(){

@@ -37,7 +37,8 @@ if(!document.querySelector('.taphint')){const th=document.createElement('div');t
 /* ---------- poster: the mascot is on screen from first paint; the live 3D model swaps in when it is ready ---------- */
 const PG={dx0:-0.2429,dx1:0.2097,dy0:-0.7622,dy1:0.0244};
 let poster=null;
-if(false&&stage){ // poster crossfade retired: the live model loads straight away
+const PHONE=stacked();
+if(PHONE&&stage){ // phones/tablets: still picture first, live 3D later (keeps first load light); desktop loads the live model straight away
   poster=document.createElement('img'); poster.className='ps-poster'; poster.alt=''; poster.setAttribute('aria-hidden','true');
   poster.decoding='async'; poster.draggable=false; poster.fetchPriority='low';
   poster.src=new URL('../assets/site/mascot-poster.webp',import.meta.url).href;
@@ -152,6 +153,6 @@ function bootMascot(){
   import('./ps-mascot.min.js').catch(err=>console.warn('mascot failed',err));
 }
 ['pointerdown','pointermove','touchstart','keydown','wheel','scroll'].forEach(ev=>addEventListener(ev,bootMascot,{once:true,passive:true}));
-const DELAY=window.__psMascotDelay??0;
+const DELAY=window.__psMascotDelay??(PHONE?6000:0);
 const later=()=>setTimeout(()=>{(window.requestIdleCallback||setTimeout)(bootMascot)},DELAY);
 if(document.readyState==='complete') later(); else addEventListener('load',later);
