@@ -191,3 +191,9 @@ html:not(.mascot-on) .taphint{display:none!important}
 .ps-poster.gone,html.mascot-on .ps-poster{opacity:0}
 #stage canvas{opacity:0;transition:opacity .6s ease}
 html.mascot-on #stage canvas{opacity:1}
+/* footer link nav must not inherit the fixed top-bar nav rules */
+footer nav.legal{position:static;inset:auto;display:flex;grid-template-columns:none;padding:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:0;z-index:auto;width:auto}
+/* never scroll sideways */
+html,body{overflow-x:clip}
+/* "tap the samurai" hint lives in the hero and scrolls away with it */
+.taphint{position:absolute!important}
