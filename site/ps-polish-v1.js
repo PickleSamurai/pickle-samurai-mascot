@@ -158,8 +158,8 @@
   var css=[
    '#ps-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#0E0E12}',
    '#ps-scene .ps-l{position:absolute;inset:0;overflow:hidden;will-change:clip-path}',
-   '#ps-scene .ps-l img{position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05);will-change:transform;transform-origin:50% 55%}',
-   '#ps-scene .ps-l video{position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;object-position:35% 50%;display:block;opacity:0;transition:opacity 1.2s ease;filter:brightness(.82) saturate(1.05);will-change:transform;transform-origin:50% 55%}',
+   '#ps-scene .ps-l img{max-width:none;position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05);will-change:transform;transform-origin:50% 55%}',
+   '#ps-scene .ps-l video{max-width:none;position:absolute;left:-5%;top:-5%;width:110%;height:110%;object-fit:cover;object-position:35% 50%;display:block;opacity:0;transition:opacity 1.2s ease;filter:brightness(.82) saturate(1.05);will-change:transform;transform-origin:50% 55%}',
    '#ps-scene .ps-l video.on{opacity:1}',
    '#ps-scene .ps-vig{position:absolute;inset:0;background:radial-gradient(120% 95% at 55% 45%,rgba(14,14,18,0) 0%,rgba(14,14,18,.35) 70%,rgba(14,14,18,.8) 100%),linear-gradient(90deg,rgba(14,14,18,.5),rgba(14,14,18,.12) 60%,rgba(14,14,18,.2)),linear-gradient(180deg,rgba(14,14,18,.5),rgba(14,14,18,0) 20%,rgba(14,14,18,0) 75%,rgba(14,14,18,.55))}',
    '#ps-scene .ps-edge{position:absolute;inset:0;width:100%;height:100%;overflow:visible}',
