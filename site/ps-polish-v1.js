@@ -2,7 +2,7 @@
    Loaded from Webflow Site settings > Custom code > Footer. Everything is injected, so no page embed needs editing. */
 (function(){
   if(window.__psPolish) return; window.__psPolish=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b501bde5e20ea14fc1e00999837c35d607edace0/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@c1f0589f9c5bc379d1bc60ecc6498ca00f55b4ca/assets/site/';
   var IG='https://www.instagram.com/thepicklesamurai/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var isHome=/^\/?$/.test(location.pathname);
@@ -138,7 +138,7 @@
   if(window.__psScene) return;
   if(!/^\/?$/.test(location.pathname)) return;
   window.__psScene=1;
-  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@b501bde5e20ea14fc1e00999837c35d607edace0/assets/site/';
+  var ASSET='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@c1f0589f9c5bc379d1bc60ecc6498ca00f55b4ca/assets/site/';
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
   var small=window.matchMedia&&matchMedia('(max-width:820px)').matches, EXT=small?'-m.webp':'.webp';
