@@ -1,21 +1,16 @@
-import * as THREE from 'three';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+/* Pickle Samurai home — v3 (eager half)
+   Everything the page needs to look finished and respond: smooth scroll, scroll story, reveal + intro animation,
+   slash FX, cursor. The heavy 3D half (three.js + mascot model) is a separate module, ps-mascot.min.js, that is
+   imported on first interaction or shortly after load, so first paint and interactivity never wait for WebGL.
+   Shared state lives on window.__ps; the 3D half reads it every frame. */
 
-/* Pickle Samurai home — v2
-   - one shared "stacked" breakpoint for CSS + JS (fixes tablet stretch)
-   - renderer sized from the real #stage box (no more squashed mascot)
-   - head/neck look-at no longer accumulates rotation (fixes head glitch)
-   - mobile: auto look-around, tap-to-slash, tap mascot to spin, reveal stagger */
-
-const GLB='https://cdn.jsdelivr.net/gh/PickleSamurai/pickle-samurai-mascot@main/pickle-samurai-idle-web-hq-v2.glb';
+gsap.registerPlugin(ScrollTrigger);
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 // MUST match the CSS media query in ps-v2.css
 const STACK_MQ=matchMedia('(max-width:820px), (max-width:1180px) and (orientation:portrait)');
 const stacked=()=>STACK_MQ.matches;
-gsap.registerPlugin(ScrollTrigger);
+const S=window.__ps={accent:'#C0392B',rot:0,secX:undefined,vis:undefined,y:0,scrollY:0,s:1,reduce,fine,stacked,onStackChange:fn=>STACK_MQ.addEventListener?.('change',fn)};
 
 /* ---------- smooth scroll ---------- */
 let lenis=null;
@@ -35,159 +30,52 @@ document.addEventListener('click',e=>{
 });
 
 /* ---------- small DOM additions (works with the existing home embed) ---------- */
-if(!document.querySelector('.taphint')){const th=document.createElement('div');th.className='taphint';th.setAttribute('aria-hidden','true');th.textContent='Tap the samurai';document.getElementById('stage').after(th)}
+const stage=document.getElementById('stage');
+if(!document.querySelector('.taphint')){const th=document.createElement('div');th.className='taphint';th.setAttribute('aria-hidden','true');th.textContent='Tap the samurai';stage.after(th)}
 {const row=document.querySelector('.cta .row2'); if(row&&!row.querySelector('a[href="/checkout"]')){const a=document.createElement('a');a.className='btn ghost';a.href='/checkout';a.innerHTML='See packages &amp; pricing';const mail=row.querySelector('.mail');row.insertBefore(a,mail)}}
 
-/* ---------- 3D stage ---------- */
-const stage=document.getElementById('stage');
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=.86;
-stage.appendChild(renderer.domElement);
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(30,1,.1,50);
-camera.position.set(0,1.0,4.7);
-const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=.5;
-const key=new THREE.DirectionalLight(0xffe1c7,1.3); key.position.set(3,4,4); scene.add(key);
-const fill=new THREE.DirectionalLight(0x7892c8,.48); fill.position.set(-3,1,4); scene.add(fill);
-const rim=new THREE.DirectionalLight(0x8f3651,1.45); rim.position.set(-4,2,-3); scene.add(rim);
-scene.add(new THREE.HemisphereLight(0xb8c3d8,0x160e1b,.2));
-
-const rig=new THREE.Group(); scene.add(rig);
-const spin=new THREE.Group(); rig.add(spin); // extra group for tap-to-spin / hop
-let mixer=null, headBone=null, neckBone=null, mascot=null;
-const mouse={x:0,y:0,sx:0,sy:0}; let lastMove=0; const lookQ=new THREE.Quaternion(), lookW=new THREE.Quaternion(), axUp=new THREE.Vector3(0,1,0), axRight=new THREE.Vector3(1,0,0), tmpV=new THREE.Vector3();
-let xFactor=1; // shrinks side offsets on narrower landscape screens so the mascot never gets cropped
-
-function resize(){
-  // size from the real box the canvas lives in -> the drawing buffer always matches its CSS size (no stretch)
-  const r=stage.getBoundingClientRect();
-  const w=Math.max(1,Math.round(r.width)), h=Math.max(1,Math.round(r.height));
-  renderer.setSize(w,h,false);
-  camera.aspect=w/h; camera.updateProjectionMatrix();
-  const small=stacked();
-  camera.position.z = small ? 4.6 : 4.7; camera.position.y = small ? 0.15 : 1.0;
-  const halfW=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z*camera.aspect;
-  xFactor=Math.min(1,halfW/2.1);
-  rig.userData.baseX = small ? 0 : 0.9*xFactor;
-  if(small){rig.userData.targetX=0}
-  else if(rig.userData.secX!==undefined){rig.userData.targetX=rig.userData.secX*xFactor}
-  ScrollTrigger.refresh();
-}
-new ResizeObserver(()=>resize()).observe(stage);
-STACK_MQ.addEventListener?.('change',resize);
-resize();
-
-const draco=new DRACOLoader(); draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-const loader=new GLTFLoader(); loader.setDRACOLoader(draco);
-loader.load(GLB,gltf=>{
-  mascot=gltf.scene; spin.add(mascot);
-  // measure the model with the rig at the origin (rig offsets must not leak into the model's centering)
-  const p0=rig.position.clone(), r0=rig.rotation.y, s0=rig.scale.x;
-  rig.position.set(0,0,0); rig.rotation.y=0; rig.scale.setScalar(1);
-  rig.updateMatrixWorld(true); mascot.updateMatrixWorld(true);
-  const box=new THREE.Box3().setFromObject(mascot); const c=box.getCenter(tmpV);
-  mascot.position.set(-c.x,-box.min.y,-c.z);
-  rig.position.copy(p0); rig.rotation.y=r0; rig.scale.setScalar(s0);
-  mascot.traverse(o=>{ if(o.isBone||o.type==='Bone'){ if(!headBone&&/Head$/.test(o.name)&&!/Top/.test(o.name))headBone=o; if(!neckBone&&/Neck$/.test(o.name))neckBone=o; }
-    if(o.isMesh){o.frustumCulled=false; const m=o.material; ['map','normalMap','roughnessMap','metalnessMap'].forEach(k=>{if(m&&m[k]){m[k].anisotropy=renderer.capabilities.getMaxAnisotropy();m[k].needsUpdate=true}}); if(m){m.envMapIntensity=.58;if(m.normalScale)m.normalScale.set(.92,.92);}} });
-  // remember each bone's un-offset pose so the look-at never stacks up frame after frame
-  [headBone,neckBone].forEach(b=>{if(b)b.userData.base=b.quaternion.clone()});
-  if(gltf.animations.length){mixer=new THREE.AnimationMixer(mascot); mixer.clipAction(gltf.animations[0]).play();}
-  rig.position.x=rig.userData.baseX;
-  rig.userData.reveal=0;
-  window.__mascotReady=true; revealMascot();
-},undefined,err=>console.warn('mascot failed',err));
-
-function revealMascot(){
-  gsap.to(rig.userData,{reveal:1,duration:1.6,ease:'expo.out',delay:reduce?0:.1});
+/* ---------- poster: the mascot is on screen from first paint; the live 3D model swaps in when it is ready ---------- */
+const PG={dx0:-0.2429,dx1:0.2097,dy0:-0.7622,dy1:0.0244};
+let poster=null;
+if(stage){
+  poster=document.createElement('img'); poster.className='ps-poster'; poster.alt=''; poster.setAttribute('aria-hidden','true');
+  poster.decoding='async'; poster.draggable=false; poster.fetchPriority='low';
+  poster.src=new URL('../assets/site/mascot-poster.webp',import.meta.url).href;
+  stage.appendChild(poster);
+  const place=()=>{
+    // same camera maths as the 3D half, so the picture sits exactly where the live model will stand
+    const r=stage.getBoundingClientRect(), W=r.width, H=r.height; if(!W||!H) return;
+    const st=stacked(), z=st?4.6:4.7, camY=st?.15:1, feetY=st?-.8:0, t15=Math.tan(Math.PI/12);
+    const px=H/(2*t15*z), xF=Math.min(1,(t15*z*(W/H))/2.1), k=4.7/z;
+    const cx=W/2+(st?0:.9*xF)*px, feet=H/2+(camY-feetY)*px;
+    poster.style.left=(cx+PG.dx0*H*k)+'px'; poster.style.top=(feet+PG.dy0*H*k)+'px';
+    poster.style.width=((PG.dx1-PG.dx0)*H*k)+'px'; poster.style.height=((PG.dy1-PG.dy0)*H*k)+'px';
+  };
+  place(); new ResizeObserver(place).observe(stage); S.onStackChange(place);
 }
 
-const clock=new THREE.Clock();
-function tick(){
-  const dt=Math.min(clock.getDelta(),0.1); // clamp: no big jumps after a background tab
-  const t=clock.elapsedTime;
-  let tx=mouse.x, ty=mouse.y;
-  if(!fine){ tx=Math.sin(t*.55)*.55; ty=Math.sin(t*.9)*.18; }          // touch screens: gentle look-around
-  else if(performance.now()-lastMove>3500){ tx=0; ty=0; }
-  const k=1-Math.exp(-dt*4.5);
-  mouse.sx+=(tx-mouse.sx)*k; mouse.sy+=(ty-mouse.sy)*k;
-
-  // 1) restore the clean pose, 2) let the animation write, 3) store it, 4) add the look offset
-  [headBone,neckBone].forEach(b=>{if(b&&b.userData.base)b.quaternion.copy(b.userData.base)});
-  if(mixer)mixer.update(dt);
-  [headBone,neckBone].forEach(b=>{if(b)b.userData.base.copy(b.quaternion)});
-  if(!reduce&&headBone){
-    const yaw=Math.max(-1,Math.min(1,mouse.sx))*0.38, pitch=Math.max(-1,Math.min(1,mouse.sy))*0.13;
-    mascot.updateMatrixWorld(true);
-    const apply=(bone,w)=>{
-      bone.getWorldQuaternion(lookW).invert();
-      lookQ.setFromAxisAngle(tmpV.copy(axUp).applyQuaternion(lookW),yaw*w);   bone.quaternion.multiply(lookQ);
-      lookQ.setFromAxisAngle(tmpV.copy(axRight).applyQuaternion(lookW),pitch*w); bone.quaternion.multiply(lookQ);
-    };
-    apply(headBone,0.65); if(neckBone)apply(neckBone,0.35);
-  }
-  const small=stacked();
-  const e=1-Math.exp(-dt*3.8); // frame-rate independent easing
-  rig.rotation.y += ((rig.userData.targetRot||0)+mouse.sx*.18 - rig.rotation.y)*e;
-  rig.position.x += ((rig.userData.targetX ?? rig.userData.baseX) - rig.position.x)*e;
-  rig.userData.y=(rig.userData.y||0)+((rig.userData.targetY||0)-(rig.userData.y||0))*e;
-  rig.position.y = small ? -0.8 : (rig.userData.scrollY||0)+rig.userData.y;
-  rig.userData.vis=(rig.userData.vis??1)+((rig.userData.targetVis??1)-(rig.userData.vis??1))*e;
-  rig.scale.setScalar(Math.max(.001,(rig.userData.reveal||0)*(rig.userData.s||1)*rig.userData.vis));
-  renderer.render(scene,camera);
-  requestAnimationFrame(tick);
-}
-tick();
-addEventListener('pointermove',e=>{if(e.pointerType==='touch')return; lastMove=performance.now(); mouse.x=(e.clientX/innerWidth)*2-1; mouse.y=(e.clientY/innerHeight)*2-1;});
-
-/* ---------- tap the mascot: spin + hop (all devices) ---------- */
-let spinning=false;
-function mascotTrick(){
-  if(spinning||reduce||!mascot) return; spinning=true;
-  document.querySelector('.taphint')?.classList.add('gone');
-  gsap.timeline({onComplete:()=>{spin.rotation.y=0;spinning=false}})
-    .to(spin.position,{y:.28,duration:.28,ease:'power2.out'})
-    .to(spin.rotation,{y:Math.PI*2,duration:.75,ease:'power3.inOut'},0)
-    .to(spin.position,{y:0,duration:.45,ease:'bounce.out'},.3);
-  if(navigator.vibrate) try{navigator.vibrate(12)}catch(_){}
-}
-addEventListener('pointerdown',e=>{
-  if(e.target.closest('a,button,input,label,select,textarea,.ps-menu')) return;
-  const r=stage.getBoundingClientRect();
-  if(stacked()){ if(e.clientY>=r.top&&e.clientY<=r.bottom) mascotTrick(); }
-  else { // desktop: roughly the mascot's column
-    const cx=r.left+r.width*(.5+(rig.position.x/ (Math.tan(THREE.MathUtils.degToRad(15))*camera.position.z*camera.aspect))/2);
-    if(Math.abs(e.clientX-cx)<r.width*.12&&e.clientY>r.height*.15&&e.clientY<r.height*.95&&scrollY<innerHeight*.6) mascotTrick();
-  }
-});
-
-/* ---------- scroll story: mascot pose + accent colour per section ---------- */
+/* ---------- scroll story: accent colour + mascot pose per section (the 3D half reads window.__ps) ---------- */
 const glow=document.getElementById('glow');
-const tmpC=new THREE.Color();
 function setAccent(hex){
-  document.documentElement.style.setProperty('--accent',hex);
-  tmpC.set(hex); gsap.to(rim.color,{r:tmpC.r,g:tmpC.g,b:tmpC.b,duration:.8});
+  document.documentElement.style.setProperty('--accent',hex); S.accent=hex;
   if(glow) glow.style.background=`radial-gradient(circle,${hex},transparent 70%)`;
 }
 document.querySelectorAll('section[data-accent]').forEach(sec=>{
   ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',
     onToggle:self=>{ if(self.isActive){
       setAccent(sec.dataset.accent);
-      const small=stacked();
-      rig.userData.targetRot=parseFloat(sec.dataset.rot||0);
-      rig.userData.secX=parseFloat(sec.dataset.x||0);
-      rig.userData.targetX=small?0:rig.userData.secX*xFactor;
-      rig.userData.targetVis=sec.dataset.vis!==undefined?(small?1:parseFloat(sec.dataset.vis)):1;
-      rig.userData.targetY=small?0:parseFloat(sec.dataset.y||0);
+      S.rot=parseFloat(sec.dataset.rot||0);
+      S.secX=parseFloat(sec.dataset.x||0);
+      S.vis=sec.dataset.vis!==undefined?parseFloat(sec.dataset.vis):undefined;
+      S.y=parseFloat(sec.dataset.y||0);
     }}});
 });
-ScrollTrigger.create({trigger:'#top',start:'top top',end:'bottom top',onLeaveBack:()=>{setAccent('#C0392B');rig.userData.targetRot=0;rig.userData.secX=undefined;rig.userData.targetX=rig.userData.baseX;rig.userData.targetVis=1;rig.userData.targetY=0;}});
-ScrollTrigger.create({trigger:'#top',start:'top top',end:'bottom top',scrub:true,onUpdate:s=>{rig.userData.scrollY=-s.progress*0.12; rig.userData.s=stacked()?1:1-s.progress*0.2}});
+ScrollTrigger.create({trigger:'#top',start:'top top',end:'bottom top',onLeaveBack:()=>{setAccent('#C0392B');S.rot=0;S.secX=undefined;S.vis=undefined;S.y=0;}});
+if(poster) ScrollTrigger.create({trigger:'#top',start:'top top',end:'60% top',onLeave:()=>poster.classList.add('gone'),onEnterBack:()=>poster.classList.remove('gone')});
+ScrollTrigger.create({trigger:'#top',start:'top top',end:'bottom top',scrub:true,onUpdate:s=>{S.scrollY=-s.progress*0.12; S.s=stacked()?1:1-s.progress*0.2}});
 
 const hint=document.querySelector('.taphint');
-if(hint) ScrollTrigger.create({trigger:'#top',start:'top top',end:'20% top',onLeave:()=>hint.classList.add('gone'),onEnterBack:()=>{if(!spinning)hint.classList.remove('gone')}});
+if(hint) ScrollTrigger.create({trigger:'#top',start:'top top',end:'20% top',onLeave:()=>hint.classList.add('gone'),onEnterBack:()=>{hint.classList.remove('gone')}});
 
 /* ---------- scroll progress ---------- */
 const bar=document.getElementById('progress');
@@ -211,20 +99,16 @@ if(!reduce){
   document.querySelectorAll('.socials .soc').forEach((s,i)=>gsap.from(s,{y:18,opacity:0,duration:.5,delay:i*.07,ease:'back.out(2)',scrollTrigger:{trigger:s,start:'top 95%'}}));
 }
 
-/* ---------- intro ---------- */
+/* ---------- intro: a katana line sweeps over the live hero (nothing is hidden behind a cover screen) ---------- */
 function intro(){
   const tl=gsap.timeline({defaults:{ease:'power4.inOut'}});
-  tl.to('#intro .slash',{scaleX:1,duration:.7})
-    .to('#intro .word',{clipPath:'inset(0 0% 0 0)',duration:.7},'-=.2')
-    .to('#intro .slash',{opacity:0,duration:.3},'+=.1')
-    .to('#intro .top',{yPercent:-100,duration:.9},'+=.15')
-    .to('#intro .bot',{yPercent:100,duration:.9},'<')
-    .to('#intro .word',{opacity:0,duration:.2},'<')
-    .set('#intro',{display:'none'})
-    .to('.hero .ch',{y:0,duration:1.1,stagger:.04,ease:'expo.out'},'-=.55')
-    .from('.hero .tag,.hero .sub,.hero .row,nav',{opacity:0,y:20,duration:.9,stagger:.08,ease:'power3.out',clearProps:'transform'},'-=.7');
+  tl.to('#intro .slash',{scaleX:1,duration:.45})
+    .to('#intro .slash',{opacity:0,duration:.25},'+=.04')
+    .to('.hero .ch',{y:0,duration:.9,stagger:.03,ease:'expo.out'},'-=.6')
+    .from('.hero .tag,.hero .sub,.hero .row,nav',{opacity:0,y:16,duration:.7,stagger:.07,ease:'power3.out',clearProps:'transform'},'-=.65')
+    .set('#intro',{display:'none'});
 }
-if(!reduce){document.documentElement.style.overflow='hidden'; intro(); setTimeout(()=>document.documentElement.style.overflow='',2800);}
+if(!reduce) intro();
 else{document.getElementById('intro')?.style.setProperty('display','none')}
 
 /* ---------- katana slash FX: mouse click on desktop, tap on touch ---------- */
@@ -260,3 +144,14 @@ if(fine&&!reduce){
     el.addEventListener('mouseleave',()=>{qx(0);qy(0)});
   });
 }
+
+/* ---------- lazy 3D mascot: import on first interaction, or shortly after load ---------- */
+let booted=false;
+function bootMascot(){
+  if(booted||!stage) return; booted=true;
+  import('./ps-mascot.min.js').catch(err=>console.warn('mascot failed',err));
+}
+['pointerdown','pointermove','touchstart','keydown','wheel','scroll'].forEach(ev=>addEventListener(ev,bootMascot,{once:true,passive:true}));
+const DELAY=window.__psMascotDelay??8000;
+const later=()=>setTimeout(()=>{(window.requestIdleCallback||setTimeout)(bootMascot)},DELAY);
+if(document.readyState==='complete') later(); else addEventListener('load',later);

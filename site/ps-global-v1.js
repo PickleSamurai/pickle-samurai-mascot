@@ -28,6 +28,8 @@
       document.body.insertBefore(el('div',{'class':'ps-glow b','aria-hidden':'true'}),document.body.firstChild);
     }
     var nav=document.querySelector('nav[aria-label="Main"]');
+    // accessible name must contain the visible text (WCAG 2.5.3 label in name)
+    document.querySelectorAll('a.logo[aria-label]').forEach(function(l){var t=(l.textContent||'').replace(/\s+/g,'');if(t)l.setAttribute('aria-label',t+' home')});
     // 2) Pricing link
     if(nav){
       var ul=nav.querySelector('ul');
