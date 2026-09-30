@@ -242,7 +242,7 @@
     if(small&&ts-lastT<33){requestAnimationFrame(tick);return} lastT=ts;
     if(vis){
       ctx.clearRect(0,0,W,H);
-      var ac=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(); if(ac) accent=ac;
+      var ac=(window.__ps&&window.__ps.accent)||''; if(ac) accent=ac;
       var sp=sprite(accent);
       for(var i=0;i<ps.length;i++){
         var p=ps[i]; p.y-=p.v; p.x+=p.d+Math.sin(p.ph+=.01)*.15;
@@ -254,9 +254,9 @@
     requestAnimationFrame(tick);
   }
   document.addEventListener('visibilitychange',function(){vis=!document.hidden});
-  fit(); for(var q=0;q<N;q++) ps.push(mk(true));
   findSecs(); frame();
-  if(!reduce) requestAnimationFrame(tick);
+  /* embers start a moment later so scene set-up never piles onto the first-paint work */
+  setTimeout(function(){ fit(); for(var q=0;q<N;q++) ps.push(mk(true)); if(!reduce) requestAnimationFrame(tick); },1500);
   /* sections are created late by some embeds; re-find a few times */
   var n=0,t=setInterval(function(){findSecs();req();if(++n>20)clearInterval(t)},500);
 })();
