@@ -75,6 +75,8 @@ function revealMascot(){
   gsap.to(rig.userData,{reveal:1,duration:1.6,ease:'expo.out',delay:reduce?0:.1});
 }
 
+let stageVisible=true, running=true;
+new IntersectionObserver(es=>{stageVisible=es[0].isIntersecting; if(stageVisible&&!running){running=true;clock.getDelta();requestAnimationFrame(tick)}}).observe(stage);
 const tmpC=new THREE.Color(); let accentSeen='';
 const clock=new THREE.Clock();
 function tick(){
@@ -103,7 +105,7 @@ function tick(){
   const small=stacked();
   if(S.accent!==accentSeen){ accentSeen=S.accent; tmpC.set(S.accent); gsap.to(rim.color,{r:tmpC.r,g:tmpC.g,b:tmpC.b,duration:.8}); }
   const e=1-Math.exp(-dt*3.8); // frame-rate independent easing
-  rig.rotation.y += ((S.rot||0)+mouse.sx*.18 - rig.rotation.y)*e;
+  rig.rotation.y += ((small?0:(S.rot||0))+mouse.sx*.18 - rig.rotation.y)*e;
   const goalX = small ? 0 : (S.secX!==undefined ? S.secX*xFactor : rig.userData.baseX);
   rig.position.x += (goalX - rig.position.x)*e;
   rig.userData.y=(rig.userData.y||0)+((small?0:(S.y||0))-(rig.userData.y||0))*e;
@@ -111,7 +113,7 @@ function tick(){
   rig.userData.vis=(rig.userData.vis??1)+((S.vis!==undefined?(small?1:S.vis):1)-(rig.userData.vis??1))*e;
   rig.scale.setScalar(Math.max(.001,(rig.userData.reveal||0)*(S.s||1)*rig.userData.vis));
   renderer.render(scene,camera);
-  requestAnimationFrame(tick);
+  if(stageVisible) requestAnimationFrame(tick); else running=false;
 }
 tick();
 addEventListener('pointermove',e=>{if(e.pointerType==='touch')return; lastMove=performance.now(); mouse.x=(e.clientX/innerWidth)*2-1; mouse.y=(e.clientY/innerHeight)*2-1;});
