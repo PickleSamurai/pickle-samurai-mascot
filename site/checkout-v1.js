@@ -16,8 +16,7 @@ var CONFIG={
   bookUrl:'https://calendar.google.com/calendar/appointments/schedules/AcZssZ04zb_XMrqEWHHy236uobBIjQZjtXZEzW-iknCMImnTSsfS3PUrZDcU09yu_R_eMaGFGNuKMVWW',
   termsUrl:'/terms'
 };
-var STRIPE_LINKS={
-  /* Today's payment is the one-time build price. The chosen care plan is recorded in client_reference_id and billed after launch (starts 30 days after checkout). */
+/* SAVED website Stripe links (paused: websites are paid after a written proposal; paste back to switch to pay-now)
   'gbp|none':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
   'gbp|gbpcare':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
   'ronin|guard':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
@@ -26,8 +25,17 @@ var STRIPE_LINKS={
   'samurai|dojo':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
   'samurai|shogunc':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
   'shogun|shogunc':'https://buy.stripe.com/14A6oB7QG7wqgLW1V8bsc03'
+*/
+var STRIPE_LINKS={
+  /* Websites and profile work: no link = 'Finish on a quick call'. Payment is requested after scope is agreed. */
+  'gbp|none':'','gbp|gbpcare':'','ronin|guard':'','ronin|dojo':'','ronin|shogunc':'','samurai|dojo':'','samurai|shogunc':'','shogun|shogunc':'',
+  /* Single Ad is a fixed product, paid now. PASTE the $149 Stripe Payment Link between the quotes: */
+  'ad|none':''
 };
 var BUILDS=[
+  {id:'ad',name:'Single Ad',kanji:'広',tag:'Motion ad',price:149,time:'3 to 5 business days',ad:true,
+   care:['none'],
+   feats:['1 short motion ad for Instagram, TikTok, Facebook or YouTube Shorts','Hook, captions and call to action included','1 round of revisions','You own the finished ad for your own channels']},
   {id:'gbp',name:'GBP Tune-Up',kanji:'刃',tag:'Get found locally',price:350,time:'About 1 week',
    care:['none','gbpcare'],
    feats:['Google Business Profile audit and rewrite','Categories, services and hours set up right','Photo plan and upload checklist','Review-reply templates you can reuse']},
@@ -63,7 +71,7 @@ root.innerHTML=
 '<header class="fx-head">'+
   '<p class="fx-kicker">Checkout</p>'+
   '<h1 class="fx-title"><span>Forge</span> <span>your</span> <span>site</span></h1>'+
-  '<p class="fx-lead">Three quick steps. Pick your blade, pick your guard, seal the deal. Payment happens on Stripe’s secure page.</p>'+
+  '<p class="fx-lead">Pick your blade, pick your guard, seal the deal. Single ads are paid online through Stripe. Websites and profile work start with a free scope call, and you pay after we agree on a written proposal.</p>'+
   '<ol class="fx-steps" aria-label="Checkout steps">'+
     '<li data-s="1"><b>1</b><span>Blade</span></li><li data-s="2"><b>2</b><span>Guard</span></li><li data-s="3"><b>3</b><span>Seal</span></li>'+
     '<div class="fx-blade" aria-hidden="true"><i></i></div>'+
@@ -84,7 +92,7 @@ root.innerHTML=
     '<div class="fx-tot"><span>Due today</span><strong class="fx-today">$0</strong></div>'+
     '<div class="fx-tot m"><span>Monthly</span><strong class="fx-monthly">—</strong></div>'+
     '<button type="button" class="fx-go btn" disabled>Choose a package</button>'+
-    '<p class="fx-safe"><i aria-hidden="true"></i>Secure payment by Stripe. We never see or store your card. Your monthly care plan is confirmed by email and billed starting 30 days after checkout.</p>'+
+    '<p class="fx-safe"><i aria-hidden="true"></i></p>'+
   '</aside>'+
 '</div>'+
 '<div class="fx-cut" aria-hidden="true"><canvas></canvas></div>'+
@@ -134,7 +142,7 @@ function pickBuild(id,card){
   var changed=state.build!==id; state.build=id; mark(buildsEl,id); slashCard(card);
   if(changed){ state.care=null; renderCares(); var b=B(); if(b.care.length===1){state.care=b.care[0]; mark(caresEl,state.care)} }
   summary();
-  setTimeout(function(){go(2)},reduce?0:520);
+  var nb=B(); setTimeout(function(){go(nb.ad?3:2)},reduce?0:520);
 }
 function pickCare(id,card){ state.care=id; mark(caresEl,id); slashCard(card); summary(); setTimeout(function(){go(3)},reduce?0:520) }
 
@@ -154,15 +162,15 @@ function go(n){
   var top=root.querySelector('.fx-grid').getBoundingClientRect().top+scrollY-110; if(scrollY>top) scrollTo({top:top,behavior:reduce?'auto':'smooth'});
   var hd=root.querySelector('.fx-panel[data-step="'+n+'"] h2'); if(hd){hd.setAttribute('tabindex','-1');hd.focus({preventScroll:true})}
 }
-[].forEach.call(root.querySelectorAll('.fx-back'),function(b){b.addEventListener('click',function(){go(state.step-1)})});
+[].forEach.call(root.querySelectorAll('.fx-back'),function(b){b.addEventListener('click',function(){go(state.step===3&&B()&&B().ad?1:state.step-1)})});
 
 function scrollPaper(){
   var b=B(), k=CARE[state.care], el=root.querySelector('.fx-scroll-in');
   el.innerHTML='<p class="fx-sk">Order scroll</p>'+
-    '<div class="fx-row"><span>'+b.name+'<small>One-time build · '+b.time+'</small></span><b>'+money(b.price)+'</b></div>'+
-    (k.price?'<div class="fx-row"><span>'+k.name+'<small>Starts '+CONFIG.careStartsAfterDays+' days after checkout, then monthly</small></span><b>'+money(k.price)+'/mo</b></div>':'')+
-    '<div class="fx-row t"><span>Due today</span><b>'+money(b.price)+'</b></div>'+
-    '<ul class="fx-next"><li>Stripe emails your receipt right away</li><li>You pick a kickoff call time on the next screen</li><li>You own your domain; registrar fees are paid to them directly</li></ul>';
+    '<div class="fx-row"><span>'+b.name+'<small>'+(b.ad?'One-time ad':'One-time build')+' · '+b.time+'</small></span><b>'+money(b.price)+'</b></div>'+
+    (k.price?'<div class="fx-row"><span>'+k.name+'<small>Starts '+CONFIG.careStartsAfterDays+' days after kickoff, then monthly</small></span><b>'+money(k.price)+'/mo</b></div>':'')+
+    '<div class="fx-row t"><span>'+(link()?'Due today':'Due after we agree on scope')+'</span><b>'+money(b.price)+'</b></div>'+
+    '<ul class="fx-next">'+(link()?'<li>Stripe emails your receipt right away</li><li>You pick a time on the next screen to send your ad details</li>':'<li>No payment today</li><li>You pick a time for a free scope call on the next screen</li><li>After we agree on scope, you get a written proposal before you pay</li>')+''+(b.ad?'':'<li>You own your domain; registrar fees are paid to them directly</li>')+'</ul>';
   var ag=root.querySelector('.fx-agree span');
   ag.innerHTML='I agree to the <a href="'+CONFIG.termsUrl+'" target="_blank" rel="noopener">Terms</a>'+
     (k.price&&b.id!=='gbp'?' and understand '+k.name+' ('+money(k.price)+'/mo) has a '+CONFIG.careMinimumMonths+'-month minimum, then is month-to-month and cancelable anytime.':
@@ -178,6 +186,8 @@ function summary(){
     (k&&k.price?'<div class="fx-line"><span>'+k.name+'</span><b>'+money(k.price)+'/mo</b></div>':'');
   bump(root.querySelector('.fx-today'),b?money(b.price):'$0');
   bump(root.querySelector('.fx-monthly'),k&&k.price?money(k.price)+'/mo':'—');
+  var tl=root.querySelector('.fx-tot span'); if(tl) tl.textContent=(!b||link())?'Due today':'Due after scope call';
+  var sf=root.querySelector('.fx-safe'); if(sf) sf.innerHTML='<i aria-hidden="true"></i>'+((!b||link())?'Secure payment by Stripe. We never see or store your card.':'No payment today. You get a written proposal with price, billing and refund terms before you pay. Monthly care plans start 30 days after kickoff.');
   var btn=root.querySelector('.fx-go');
   if(!b){btn.textContent='Choose a package';btn.disabled=true}
   else if(!k){btn.textContent='Next: choose care';btn.disabled=false}
@@ -245,5 +255,5 @@ if(!reduce){
   requestAnimationFrame(function(){root.classList.add('fx-ready')});
 }
 if(state.build){ mark(buildsEl,state.build); renderCares(); var b0=B(); if(b0.care.length===1){state.care=b0.care[0];mark(caresEl,state.care)} }
-go(state.build?2:1);
+go(state.build?(B().ad?3:2):1);
 })();
