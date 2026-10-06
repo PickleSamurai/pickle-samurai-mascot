@@ -30,7 +30,7 @@ var STRIPE_LINKS={
   /* Websites and profile work: no link = 'Finish on a quick call'. Payment is requested after scope is agreed. */
   'gbp|none':'','gbp|gbpcare':'','ronin|guard':'','ronin|dojo':'','ronin|shogunc':'','samurai|dojo':'','samurai|shogunc':'','shogun|shogunc':'',
   /* Single Ad is a fixed product, paid now. PASTE the $149 Stripe Payment Link between the quotes: */
-  'ad|none':''
+  'ad|none':'https://buy.stripe.com/5kQ9ANdb003YcvG57kbsc09'
 };
 var BUILDS=[
   {id:'ad',name:'Single Ad',kanji:'広',tag:'Motion ad',price:149,time:'3 to 5 business days',ad:true,
