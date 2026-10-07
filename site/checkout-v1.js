@@ -30,9 +30,11 @@ var STRIPE_LINKS={
   /* Websites and profile work: no link = 'Finish on a quick call'. Payment is requested after scope is agreed. */
   'gbp|none':'','gbp|gbpcare':'','ronin|guard':'','ronin|dojo':'','ronin|shogunc':'','samurai|dojo':'','samurai|shogunc':'','shogun|shogunc':'',
   /* Single Ad is a fixed product, paid now. PASTE the $149 Stripe Payment Link between the quotes: */
-  'ad|none':'https://buy.stripe.com/5kQ9ANdb003YcvG57kbsc09'
+  'ad|none':'https://buy.stripe.com/5kQ9ANdb003YcvG57kbsc09',
+  'pilot|none':'https://buy.stripe.com/8x2cMZ9YO8Au0MYeHUbsc08'
 };
 var BUILDS=[
+  {id:'pilot',name:'GBP Tune-Up Pilot',kanji:'試',tag:'Intro pilot',price:150,time:'About 1 week',fixed:true,care:['none'],feats:['Google Business Profile audit and rewrite','Categories, services and hours set up right','Photo plan and upload checklist','Review-reply templates you can reuse']},
   {id:'ad',name:'Single Ad',kanji:'広',tag:'Motion ad',price:149,time:'3 to 5 business days',ad:true,
    care:['none'],
    feats:['1 short motion ad for Instagram, TikTok, Facebook or YouTube Shorts','Hook, captions and call to action included','1 round of revisions','You own the finished ad for your own channels']},
@@ -142,7 +144,7 @@ function pickBuild(id,card){
   var changed=state.build!==id; state.build=id; mark(buildsEl,id); slashCard(card);
   if(changed){ state.care=null; renderCares(); var b=B(); if(b.care.length===1){state.care=b.care[0]; mark(caresEl,state.care)} }
   summary();
-  var nb=B(); setTimeout(function(){go(nb.ad?3:2)},reduce?0:520);
+  var nb=B(); setTimeout(function(){go((nb.ad||nb.fixed)?3:2)},reduce?0:520);
 }
 function pickCare(id,card){ state.care=id; mark(caresEl,id); slashCard(card); summary(); setTimeout(function(){go(3)},reduce?0:520) }
 
@@ -162,15 +164,15 @@ function go(n){
   var top=root.querySelector('.fx-grid').getBoundingClientRect().top+scrollY-110; if(scrollY>top) scrollTo({top:top,behavior:reduce?'auto':'smooth'});
   var hd=root.querySelector('.fx-panel[data-step="'+n+'"] h2'); if(hd){hd.setAttribute('tabindex','-1');hd.focus({preventScroll:true})}
 }
-[].forEach.call(root.querySelectorAll('.fx-back'),function(b){b.addEventListener('click',function(){go(state.step===3&&B()&&B().ad?1:state.step-1)})});
+[].forEach.call(root.querySelectorAll('.fx-back'),function(b){b.addEventListener('click',function(){go(state.step===3&&B()&&(B().ad||B().fixed)?1:state.step-1)})});
 
 function scrollPaper(){
   var b=B(), k=CARE[state.care], el=root.querySelector('.fx-scroll-in');
   el.innerHTML='<p class="fx-sk">Order scroll</p>'+
-    '<div class="fx-row"><span>'+b.name+'<small>'+(b.ad?'One-time ad':'One-time build')+' · '+b.time+'</small></span><b>'+money(b.price)+'</b></div>'+
+    '<div class="fx-row"><span>'+b.name+'<small>'+(b.ad?'One-time ad':b.fixed?'One-time service':'One-time build')+' · '+b.time+'</small></span><b>'+money(b.price)+'</b></div>'+
     (k.price?'<div class="fx-row"><span>'+k.name+'<small>Starts '+CONFIG.careStartsAfterDays+' days after kickoff, then monthly</small></span><b>'+money(k.price)+'/mo</b></div>':'')+
     '<div class="fx-row t"><span>'+(link()?'Due today':'Due after we agree on scope')+'</span><b>'+money(b.price)+'</b></div>'+
-    '<ul class="fx-next">'+(link()?'<li>Stripe emails your receipt right away</li><li>You pick a time on the next screen to send your ad details</li>':'<li>No payment today</li><li>You pick a time for a free scope call on the next screen</li><li>After we agree on scope, you get a written proposal before you pay</li>')+''+(b.ad?'':'<li>You own your domain; registrar fees are paid to them directly</li>')+'</ul>';
+    '<ul class="fx-next">'+(link()?'<li>Stripe emails your receipt right away</li><li>You pick a time on the next screen to '+(b.fixed?'share your profile access':'send your ad details')+'</li>':'<li>No payment today</li><li>You pick a time for a free scope call on the next screen</li><li>After we agree on scope, you get a written proposal before you pay</li>')+''+((b.ad||b.fixed)?'':'<li>You own your domain; registrar fees are paid to them directly</li>')+'</ul>';
   var ag=root.querySelector('.fx-agree span');
   ag.innerHTML='I agree to the <a href="'+CONFIG.termsUrl+'" target="_blank" rel="noopener">Terms</a>'+
     (k.price&&b.id!=='gbp'?' and understand '+k.name+' ('+money(k.price)+'/mo) has a '+CONFIG.careMinimumMonths+'-month minimum, then is month-to-month and cancelable anytime.':
@@ -255,5 +257,5 @@ if(!reduce){
   requestAnimationFrame(function(){root.classList.add('fx-ready')});
 }
 if(state.build){ mark(buildsEl,state.build); renderCares(); var b0=B(); if(b0.care.length===1){state.care=b0.care[0];mark(caresEl,state.care)} }
-go(state.build?(B().ad?3:2):1);
+go(state.build?((B().ad||B().fixed)?3:2):1);
 })();
