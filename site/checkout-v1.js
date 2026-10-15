@@ -27,8 +27,15 @@ var CONFIG={
   'shogun|shogunc':'https://buy.stripe.com/14A6oB7QG7wqgLW1V8bsc03'
 */
 var STRIPE_LINKS={
-  /* Websites and profile work: no link = 'Finish on a quick call'. Payment is requested after scope is agreed. */
-  'gbp|none':'','gbp|gbpcare':'','ronin|guard':'','ronin|dojo':'','ronin|shogunc':'','samurai|dojo':'','samurai|shogunc':'','shogun|shogunc':'',
+  /* Websites and profile work: pay now (build price; chosen care plan starts 30 days later via its own link). */
+  'gbp|none':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
+  'gbp|gbpcare':'https://buy.stripe.com/eVqdR3gnc4ke0MY43gbsc00',
+  'ronin|guard':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'ronin|dojo':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'ronin|shogunc':'https://buy.stripe.com/cNi00def43gabrCdDQbsc01',
+  'samurai|dojo':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
+  'samurai|shogunc':'https://buy.stripe.com/dRmaER8UK9Ey8fq2Zcbsc02',
+  'shogun|shogunc':'https://buy.stripe.com/14A6oB7QG7wqgLW1V8bsc03',
   /* Single Ad is a fixed product, paid now. PASTE the $149 Stripe Payment Link between the quotes: */
   'ad|none':'https://buy.stripe.com/5kQ9ANdb003YcvG57kbsc09',
   'pilot|none':'https://buy.stripe.com/8x2cMZ9YO8Au0MYeHUbsc08'
@@ -73,7 +80,7 @@ root.innerHTML=
 '<header class="fx-head">'+
   '<p class="fx-kicker">Checkout</p>'+
   '<h1 class="fx-title"><span>Forge</span> <span>your</span> <span>site</span></h1>'+
-  '<p class="fx-lead">Pick your blade, pick your guard, seal the deal. Single ads are paid online through Stripe. Websites and profile work start with a free scope call, and you pay after we agree on a written proposal.</p>'+
+  '<p class="fx-lead">Pick your blade, pick your guard, seal the deal. Pay securely online through Stripe, then book your kickoff call. Not sure which package fits? Book a free call first.</p>'+
   '<ol class="fx-steps" aria-label="Checkout steps">'+
     '<li data-s="1"><b>1</b><span>Blade</span></li><li data-s="2"><b>2</b><span>Guard</span></li><li data-s="3"><b>3</b><span>Seal</span></li>'+
     '<div class="fx-blade" aria-hidden="true"><i></i></div>'+
@@ -172,7 +179,7 @@ function scrollPaper(){
     '<div class="fx-row"><span>'+b.name+'<small>'+(b.ad?'One-time ad':b.fixed?'One-time service':'One-time build')+' · '+b.time+'</small></span><b>'+money(b.price)+'</b></div>'+
     (k.price?'<div class="fx-row"><span>'+k.name+'<small>Starts '+CONFIG.careStartsAfterDays+' days after kickoff, then monthly</small></span><b>'+money(k.price)+'/mo</b></div>':'')+
     '<div class="fx-row t"><span>'+(link()?'Due today':'Due after we agree on scope')+'</span><b>'+money(b.price)+'</b></div>'+
-    '<ul class="fx-next">'+(link()?'<li>Stripe emails your receipt right away</li><li>You pick a time on the next screen to '+(b.fixed?'share your profile access':'send your ad details')+'</li>':'<li>No payment today</li><li>You pick a time for a free scope call on the next screen</li><li>After we agree on scope, you get a written proposal before you pay</li>')+''+((b.ad||b.fixed)?'':'<li>You own your domain; registrar fees are paid to them directly</li>')+'</ul>';
+    '<ul class="fx-next">'+(link()?'<li>Stripe emails your receipt right away</li><li>You pick a time on the next screen to '+(b.fixed?'share your profile access':b.ad?'send your ad details':'book your kickoff call')+'</li>'+((b.ad||b.fixed||state.care==='none')?'':'<li>Your monthly care plan starts 30 days after kickoff')+'</li>':'<li>No payment today</li><li>You pick a time for a free scope call on the next screen</li><li>After we agree on scope, you get a written proposal before you pay</li>')+''+((b.ad||b.fixed)?'':'<li>You own your domain; registrar fees are paid to them directly</li>')+'</ul>';
   var ag=root.querySelector('.fx-agree span');
   ag.innerHTML='I agree to the <a href="'+CONFIG.termsUrl+'" target="_blank" rel="noopener">Terms</a>'+
     (k.price&&b.id!=='gbp'?' and understand '+k.name+' ('+money(k.price)+'/mo) has a '+CONFIG.careMinimumMonths+'-month minimum, then is month-to-month and cancelable anytime.':
