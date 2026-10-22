@@ -30,7 +30,8 @@ document.addEventListener('click',e=>{
 });
 
 /* ---------- small DOM additions (works with the existing home embed) ---------- */
-const stage=document.getElementById('stage');
+const stage=null; // 3D mascot retired: hide its embed, never load three.js or the model
+document.head.insertAdjacentHTML('beforeend','<style>#stage,.taphint,.ps-poster{display:none!important}</style>');
 if(stage&&!document.querySelector('.taphint')){const th=document.createElement('div');th.className='taphint';th.setAttribute('aria-hidden','true');th.textContent='Tap the samurai';stage.after(th)}
 {const row=document.querySelector('.cta .row2'); if(row&&!row.querySelector('a[href="/checkout"]')){const a=document.createElement('a');a.className='btn ghost';a.href='/checkout';a.innerHTML='See packages &amp; pricing';const mail=row.querySelector('.mail');row.insertBefore(a,mail)}}
 
