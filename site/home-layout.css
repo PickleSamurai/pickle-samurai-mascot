@@ -11,7 +11,10 @@
 /* short desktop screens: service panels fit the viewport */
 @media (min-width:821px) and (max-height:900px){
   #main .disc h2{font-size:clamp(40px,5.2vh,64px)!important;line-height:.95!important}
-  #main .disc img{max-height:22vh;object-fit:cover}
+  #main .disc .ps-fig{max-height:17vh;overflow:hidden}
+  #main .disc .ps-fig img{height:17vh;width:100%;object-fit:cover}
+  #main .disc .num{font-size:9vh!important;line-height:1!important}
+  #main .disc p{margin-bottom:.7em}
 }
 
 /* phones/tablets: the hero no longer reserves room for the mascot */
