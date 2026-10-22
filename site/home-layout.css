@@ -1,0 +1,25 @@
+/* Home layout clean-up after the 3D mascot was retired (loaded from the Home page head). */
+
+/* the retired mascot's stage + hint: hidden before first paint */
+#stage,.taphint,.ps-poster{display:none!important}
+
+/* wide screens: keep content in a centred 1320px column instead of hugging the left edge */
+@media (min-width:1500px){
+  #main>section{padding-left:max(80px,calc((100vw - 1320px)/2))!important;padding-right:max(80px,calc((100vw - 1320px)/2))!important}
+}
+
+/* short desktop screens: service panels fit the viewport */
+@media (min-width:821px) and (max-height:900px){
+  #main .disc h2{font-size:clamp(40px,5.2vh,64px)!important;line-height:.95!important}
+  #main .disc img{max-height:22vh;object-fit:cover}
+}
+
+/* phones/tablets: the hero no longer reserves room for the mascot */
+@media (max-width:820px),(max-width:1180px) and (orientation:portrait){
+  #top.hero{padding-top:clamp(120px,22vh,200px)!important;min-height:auto!important}
+  #contact .row2{display:flex;flex-direction:column;gap:12px}
+  #contact .row2 .btn{width:100%;justify-content:center;text-align:center}
+}
+
+/* the footer already links every social account: drop the duplicate pill row */
+#contact .socials{display:none!important}
