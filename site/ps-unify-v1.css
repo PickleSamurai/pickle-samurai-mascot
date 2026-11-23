@@ -65,7 +65,7 @@ body:has(main.ps-page,main.ad-sale) main .cta-box{background:var(--surface);bord
 .ps-build{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 8px}
 .ps-build>div{background:var(--surface,#17171D);border:1px solid rgba(255,255,255,.08);border-top:2px solid var(--gold,#E9B872);border-radius:10px;padding:24px 24px 8px}
 .doc .ps-build h3{margin:0 0 12px;font-size:18px;color:var(--text,#F3F1EC)}
-.doc .ps-build ul{margin:0 0 14px 20px}
+.doc .ps-build ul{margin:0 0 14px;padding-left:18px}
 .doc .ps-build li{font-size:16px;line-height:1.65;margin-bottom:10px}
 .doc .ps-build p{font-size:15px;color:var(--muted,#A6A4AD)}
 @media (max-width:720px){.ps-build{grid-template-columns:1fr}}
