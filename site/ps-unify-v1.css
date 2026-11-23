@@ -1,0 +1,61 @@
+/* Pickle Samurai — unify v1 (site-wide)
+   About 28 pages (service, industry, article, resource, free-audit and single-ad pages) carry their own
+   inline styles: Inter/Arial headings, a red wordmark, a right-aligned menu and rounded buttons. This file
+   brings them into the house look used on the home page and the doc pages (doc-v1.css): Bebas Neue
+   headings, green SAMURAI, centred menu, angled red buttons, gold kicker line, green text links.
+
+   Scope: only pages whose <main> is .ps-page or .ad-sale. Every rule starts with the scope, which also
+   gives it enough weight to beat the page's own inline styles without !important. Pages without :has()
+   support simply keep their current look. */
+
+@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/BebasNeue-latin.woff2') format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url('fonts/Inter-latin.woff2') format('woff2')}
+
+/* ---------- body + tokens ---------- */
+body:has(main.ps-page,main.ad-sale){--ink:#0E0E12;--surface:#17171D;--red:#C0392B;--green:#9DC63B;--gold:#E9B872;--text:#F3F1EC;--muted:#A6A4AD;--accent:var(--red);
+  font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* ---------- menu bar: same as the doc pages ---------- */
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"]{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:0;
+  padding:16px clamp(20px,6vw,96px);background:rgba(14,14,18,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] .logo{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;font-size:26px;letter-spacing:.06em;justify-self:start}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] .logo b{color:var(--green);font-weight:400}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul{gap:30px;font-size:14px;color:var(--muted);justify-self:center}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a{font-size:14px;letter-spacing:0;position:relative;padding:4px 0;transition:color .3s}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a:hover{color:var(--text)}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a::after{content:"";position:absolute;left:0;bottom:-2px;height:1px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a:hover::after,
+body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a:focus-visible::after{transform:scaleX(1)}
+@media (max-width:1180px){body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul{gap:20px}body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"] ul a{font-size:13px}}
+@media (max-width:900px){body:has(main.ps-page,main.ad-sale) nav[aria-label="Main"]{grid-template-columns:1fr auto}}
+
+/* ---------- headings ---------- */
+body:has(main.ps-page,main.ad-sale) main :is(h1,h2){font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;letter-spacing:.02em;text-transform:uppercase;line-height:.95}
+body:has(main.ps-page,main.ad-sale) main h1{font-size:clamp(52px,8vw,96px);max-width:980px;margin:18px 0 18px}
+body:has(main.ps-page,main.ad-sale) main h2{font-size:clamp(32px,4vw,46px);margin:52px 0 16px;color:var(--text)}
+body:has(main.ps-page,main.ad-sale) main :is(.panel,.cta-box) h2{margin-top:0}
+body:has(main.ps-page,main.ad-sale) main h3{font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:19px;line-height:1.35;letter-spacing:0;text-transform:none}
+
+/* ---------- kicker: gold with a short rule, like the doc pages ---------- */
+body:has(main.ps-page,main.ad-sale) main .kicker{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+body:has(main.ps-page,main.ad-sale) main .kicker::before{content:"";flex:none;width:34px;height:1px;background:var(--gold)}
+
+/* ---------- text + links ---------- */
+body:has(main.ps-page,main.ad-sale) main :is(p,li){color:#D8D6DC}
+body:has(main.ps-page,main.ad-sale) main a:not(.btn){color:var(--green);text-underline-offset:3px}
+body:has(main.ps-page,main.ad-sale) main a:not(.btn):hover{color:var(--text)}
+body:has(main.ps-page,main.ad-sale) main :is(h2,h3) a:not(.btn){color:inherit}
+
+/* ---------- buttons: angled red, uppercase, green on hover ---------- */
+body:has(main.ps-page,main.ad-sale) main :is(.btn,.w-button){display:inline-block;border:0;cursor:pointer;padding:15px 26px;background:var(--red);color:#fff;border-radius:0;
+  font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:13px;line-height:1.3;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));transition:background-color .3s ease,color .3s ease}
+body:has(main.ps-page,main.ad-sale) main :is(.btn,.w-button):hover,
+body:has(main.ps-page,main.ad-sale) main :is(.btn,.w-button):focus-visible{background:var(--green);color:#0E0E12}
+body:has(main.ps-page,main.ad-sale) main :is(button,input[type=submit]){font-family:Inter,system-ui,sans-serif}
+
+/* ---------- panels + call-to-action box: match the doc callout ---------- */
+body:has(main.ps-page,main.ad-sale) main .panel{background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:10px}
+body:has(main.ps-page,main.ad-sale) main .cta-box{background:var(--surface);border-left:3px solid var(--gold)}
+
+@media (prefers-reduced-motion:reduce){body:has(main.ps-page,main.ad-sale) :is(nav ul a,main .btn,main .w-button){transition:none}body:has(main.ps-page,main.ad-sale) nav ul a::after{transition:none}}
