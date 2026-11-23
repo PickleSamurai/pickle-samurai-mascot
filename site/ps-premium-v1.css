@@ -2,9 +2,10 @@
    1. Hero intro in CSS: tagline, sub copy, CTA row and trust line play in from the first paint,
       so the call to action never waits for GSAP, Lenis or the ps-v3 module to download.
       Fill mode is `backwards`, not `both`, so nothing is left holding a transform afterwards.
-   2. Button label flip: the label turns over like a small cube on hover (desktop only).
+   2. Buttons: one calm hover (smooth colour fade, shine, label roll). Overrides the older stacked effects.
    3. Red grid spotlight: a katana-red isometric grid shows only inside a soft circle that follows
-      the cursor across the hero. Moves by transform only, so it never repaints. Desktop only. */
+      the cursor across the hero. Moves by transform only, so it never repaints. Desktop only.
+   4. Nav: one underline that slides between links, and a tighter, shadowed bar once the page scrolls. */
 
 /* ---------- 1. hero intro ---------- */
 @keyframes ps-rise{from{opacity:0;translate:0 16px}}
@@ -18,14 +19,22 @@
 #top .row{animation-delay:.32s}
 #top .nationwide-micro{animation-delay:.42s}
 
-/* ---------- 2. button label flip ---------- */
-.ps-flip{perspective:600px}
-.ps-flip-box{--d:.75em;display:inline-grid;transform-style:preserve-3d;transform:translateZ(calc(var(--d)*-1)) rotateX(0deg);transition:transform .55s cubic-bezier(.22,1,.36,1)}
-.ps-flip-face{grid-area:1/1;display:inline-flex;align-items:center;justify-content:center;gap:.5em;line-height:1.5em;min-height:1.5em;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(var(--d))}
-.ps-flip-back{transform:rotateX(-90deg) translateZ(var(--d))}
+/* ---------- 2. buttons: one calm hover ---------- */
+/* An older inline layer replaced the button transition without background, so the colour snapped,
+   and stacked a lift, a filter and a breathing glow on top. :root wins over those rules. */
+:root .btn{transition:background-color .35s ease,color .35s ease,box-shadow .35s ease;filter:none}
+:root .btn:hover,:root .btn:focus-visible{transform:none;filter:none}
+:root .hero .btn:first-of-type{animation:none}
+:root .btn::after{transition:transform .8s cubic-bezier(.22,1,.36,1)}
+:root .btn:not(:hover):not(:focus-visible)::after{transition:none}
+
+/* label roll: the label slides up and an identical copy slides in beneath it (2D, so text stays crisp) */
+.ps-flip-box{display:inline-grid;overflow:hidden;vertical-align:top}
+.ps-flip-face{grid-area:1/1;display:inline-flex;align-items:center;justify-content:center;gap:.5em;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.ps-flip-back{transform:translateY(105%)}
 @media (hover:hover) and (pointer:fine){
-  .ps-flip:hover .ps-flip-box,
-  .ps-flip:focus-visible .ps-flip-box{transform:translateZ(calc(var(--d)*-1)) rotateX(90deg)}
+  .ps-flip:hover .ps-flip-face:not(.ps-flip-back),.ps-flip:focus-visible .ps-flip-face:not(.ps-flip-back){transform:translateY(-105%)}
+  .ps-flip:hover .ps-flip-back,.ps-flip:focus-visible .ps-flip-back{transform:none}
 }
 
 /* ---------- 3. red grid spotlight ---------- */
@@ -38,10 +47,22 @@
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='48'%3E%3Cpath d='M0 24L42 0L84 24M0 24L42 48L84 24' fill='none' stroke='%23e0473a' stroke-width='1.2'/%3E%3C/svg%3E");
   background-size:84px 48px}
 
+/* ---------- 4. nav: sliding underline + scrolled state ---------- */
+nav[aria-label="Main"] ul.ps-ink{position:relative}
+nav[aria-label="Main"] ul.ps-ink a::after{display:none}
+.ps-ink-bar{position:absolute;left:0;bottom:-6px;height:1px;width:1px;border-radius:1px;pointer-events:none;
+  background:linear-gradient(90deg,#e9b872,var(--accent,#c0392b));transform-origin:0 0;opacity:0;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .3s ease}
+nav[aria-label="Main"] ul.ps-ink a.ps-ink-on{color:var(--text,#f3efe6)}
+@media (min-width:821px){
+  nav[aria-label="Main"]{transition:padding .35s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease,border-color .35s ease}
+  nav[aria-label="Main"][data-scrolled="1"]{padding-top:11px;padding-bottom:11px;box-shadow:0 10px 30px rgba(0,0,0,.35);border-bottom-color:rgba(233,184,114,.12)}
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   #top .tag,#top .sub,#top .row,#top .nationwide-micro{animation:none}
-  .ps-flip-box{transition:none}
-  .ps-flip:hover .ps-flip-box,.ps-flip:focus-visible .ps-flip-box{transform:translateZ(calc(var(--d)*-1))}
+  .ps-flip-face{transition:none}
+  .ps-ink-bar,nav[aria-label="Main"]{transition:none!important}
   #top>.ps-spot{display:none!important}
 }

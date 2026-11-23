@@ -141,8 +141,8 @@ if(fine&&!reduce){
   document.addEventListener('mouseover',e=>{if(e.target.closest&&e.target.closest('a,button,.card'))ring.classList.add('hot')});
   document.addEventListener('mouseout',e=>{if(e.target.closest&&e.target.closest('a,button,.card'))ring.classList.remove('hot')});
   document.querySelectorAll('.mag').forEach(el=>{
-    const qx=gsap.quickTo(el,'x',{duration:.5,ease:'power3'}),qy=gsap.quickTo(el,'y',{duration:.5,ease:'power3'});
-    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.3);qy((e.clientY-r.top-r.height/2)*.4)});
+    const qx=gsap.quickTo(el,"x",{duration:.6,ease:"power2.out"}),qy=gsap.quickTo(el,"y",{duration:.6,ease:"power2.out"});
+    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.06);qy((e.clientY-r.top-r.height/2)*.12)});
     el.addEventListener('mouseleave',()=>{qx(0);qy(0)});
   });
 }
