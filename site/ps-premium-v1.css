@@ -63,7 +63,7 @@ nav[aria-label="Main"] ul.ps-ink a.ps-ink-on{color:var(--text,#f3efe6)}
 /* ---------- 5. how it works: exploded stack ---------- */
 /* four layers (audit -> package -> build -> launch) sit in an isometric stack that separates as the
    section scrolls in; the step in view lights its layer. Desktop pins the stack; phones get it static. */
-#process.ps-how{display:block;min-height:0;padding-top:120px;padding-bottom:120px;background:linear-gradient(180deg,transparent,rgba(12,9,20,.55) 18%,rgba(12,9,20,.55) 82%,transparent)}
+#process.ps-how{display:block;min-height:0;padding-top:120px;padding-bottom:120px;background:linear-gradient(180deg,rgba(12,10,18,0),rgba(12,10,18,.96) 9%,rgba(12,10,18,.96) 91%,rgba(12,10,18,0));isolation:isolate}
 .ps-how-head{max-width:760px;margin-bottom:56px}
 .ps-how-kicker{margin:0 0 14px;color:var(--gold,#e9b872);font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
 #process .ps-how-head h2{font-size:clamp(48px,6vw,92px);margin:0 0 18px}
