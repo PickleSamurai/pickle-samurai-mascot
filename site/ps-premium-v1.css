@@ -1,0 +1,47 @@
+/* Pickle Samurai — premium polish v1 (home page)
+   1. Hero intro in CSS: tagline, sub copy, CTA row and trust line play in from the first paint,
+      so the call to action never waits for GSAP, Lenis or the ps-v3 module to download.
+      Fill mode is `backwards`, not `both`, so nothing is left holding a transform afterwards.
+   2. Button label flip: the label turns over like a small cube on hover (desktop only).
+   3. Red grid spotlight: a katana-red isometric grid shows only inside a soft circle that follows
+      the cursor across the hero. Moves by transform only, so it never repaints. Desktop only. */
+
+/* ---------- 1. hero intro ---------- */
+@keyframes ps-rise{from{opacity:0;translate:0 16px}}
+
+#top .tag,
+#top .sub,
+#top .row,
+#top .nationwide-micro{animation:ps-rise .7s cubic-bezier(.22,1,.36,1) backwards}
+#top .tag{animation-delay:.1s}
+#top .sub{animation-delay:.22s}
+#top .row{animation-delay:.32s}
+#top .nationwide-micro{animation-delay:.42s}
+
+/* ---------- 2. button label flip ---------- */
+.ps-flip{perspective:600px}
+.ps-flip-box{--d:.75em;display:inline-grid;transform-style:preserve-3d;transform:translateZ(calc(var(--d)*-1)) rotateX(0deg);transition:transform .55s cubic-bezier(.22,1,.36,1)}
+.ps-flip-face{grid-area:1/1;display:inline-flex;align-items:center;justify-content:center;gap:.5em;line-height:1.5em;min-height:1.5em;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(var(--d))}
+.ps-flip-back{transform:rotateX(-90deg) translateZ(var(--d))}
+@media (hover:hover) and (pointer:fine){
+  .ps-flip:hover .ps-flip-box,
+  .ps-flip:focus-visible .ps-flip-box{transform:translateZ(calc(var(--d)*-1)) rotateX(90deg)}
+}
+
+/* ---------- 3. red grid spotlight ---------- */
+/* the hero styles every direct child as a relative flex item, so this layer pins itself back out */
+#top>.ps-spot{position:absolute!important;inset:0!important;z-index:1!important;width:auto!important;height:auto!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important;overflow:hidden;pointer-events:none}
+.ps-spot-win{position:absolute;top:0;left:0;width:380px;height:380px;overflow:hidden;opacity:0;transition:opacity .45s ease;will-change:transform,opacity;
+  -webkit-mask-image:radial-gradient(closest-side,#000 30%,transparent 100%);mask-image:radial-gradient(closest-side,#000 30%,transparent 100%)}
+.ps-spot[data-on="1"] .ps-spot-win{opacity:.8}
+.ps-spot-grid{position:absolute;top:0;left:0;will-change:transform;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='48'%3E%3Cpath d='M0 24L42 0L84 24M0 24L42 48L84 24' fill='none' stroke='%23e0473a' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size:84px 48px}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  #top .tag,#top .sub,#top .row,#top .nationwide-micro{animation:none}
+  .ps-flip-box{transition:none}
+  .ps-flip:hover .ps-flip-box,.ps-flip:focus-visible .ps-flip-box{transform:translateZ(calc(var(--d)*-1))}
+  #top>.ps-spot{display:none!important}
+}

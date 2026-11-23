@@ -107,7 +107,7 @@ function intro(){
   tl.to('#intro .slash',{scaleX:1,duration:.45})
     .to('#intro .slash',{opacity:0,duration:.25},'+=.04')
     .to('.hero .ch',{y:0,duration:.9,stagger:.03,ease:'expo.out'},'-=.6')
-    .from('.hero .tag,.hero .sub,.hero .row,nav',{opacity:0,y:16,duration:.7,stagger:.07,ease:'power3.out',clearProps:'transform'},'-=.65')
+    // tagline, sub copy and CTA row now play in from CSS (ps-premium-v1.css) so they never wait for this module
     .set('#intro',{display:'none'});
 }
 if(!reduce) intro();
