@@ -59,3 +59,16 @@ body:has(main.ps-page,main.ad-sale) main .panel{background:var(--surface);border
 body:has(main.ps-page,main.ad-sale) main .cta-box{background:var(--surface);border-left:3px solid var(--gold)}
 
 @media (prefers-reduced-motion:reduce){body:has(main.ps-page,main.ad-sale) :is(nav ul a,main .btn,main .w-button){transition:none}body:has(main.ps-page,main.ad-sale) nav ul a::after{transition:none}}
+
+/* ---------- shared components (any page) ---------- */
+/* "How we build and protect your site" — two side-by-side panels on About */
+.ps-build{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:18px 0 8px}
+.ps-build>div{background:var(--surface,#17171D);border:1px solid rgba(255,255,255,.08);border-top:2px solid var(--gold,#E9B872);border-radius:10px;padding:24px 24px 8px}
+.doc .ps-build h3{margin:0 0 12px;font-size:18px;color:var(--text,#F3F1EC)}
+.doc .ps-build ul{margin:0 0 14px 20px}
+.doc .ps-build li{font-size:16px;line-height:1.65;margin-bottom:10px}
+.doc .ps-build p{font-size:15px;color:var(--muted,#A6A4AD)}
+@media (max-width:720px){.ps-build{grid-template-columns:1fr}}
+/* client-work label on the Work page */
+.work-page .case .ps-client{color:var(--green,#9DC63B)}
+.work-page .case .ps-case-note{font-size:14px;color:var(--muted,#A6A4AD)}
